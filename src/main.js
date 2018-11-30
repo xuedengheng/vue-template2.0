@@ -1,12 +1,22 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
-import store from './store'
+import router from '@router'
+import store from '@state/store'
+import './design/_globals.styl'
+import '@components/_globals'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = process.env.NODE_ENV === 'production'
 
-new Vue({
+if (window.Cypress) {
+  Vue.config.errorHandler = window.Cypress.cy.onUncaughtException
+}
+
+export const app = new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+
+if (window.Cypress) {
+  window.__app__ = app
+}
