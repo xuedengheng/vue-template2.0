@@ -25,7 +25,7 @@
 
 <script>
   import Cropper from '@components/cropper/cropper'
-  import {Global} from '@api'
+  import API from '@api'
   import wx from 'weixin-js-sdk'
 
   export default {
@@ -39,12 +39,11 @@
       }
     },
     created() {
-      console.log(this.$loading)
       this.$loading.show()
-      // setTimeout(() => {
-      //   this.$loading.hide()
-      // }, 1500)
-      // this._getWxSdk()
+      setTimeout(() => {
+        this.$loading.hide()
+      }, 1500)
+      this._getWxSdk()
 
     },
     methods: {
@@ -59,7 +58,7 @@
       },
       _getWxSdk() {
         let url = window.location.href
-        Global.jssdkConfig({url}).then((res) => {
+        API.Global.jssdkConfig({url}).then((res) => {
           if (res.error === this.$ERR_OK) {
             res = res.data
             wx.config({

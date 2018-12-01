@@ -1,18 +1,17 @@
 'use strict'
 
 import axios from 'axios'
-import {BASE_URL} from './config'
 import storage from 'storage-controller'
 import * as Utils from './request-utils'
 
-const baseUrl = BASE_URL
+const baseUrl = process.env.VUE_APP_API
 const TIME_OUT = 10000
 const ERR_OK = 0
 const ERR_NO = -404
 const COMMON_HEADER = {}
 
 const http = axios.create({
-  baseURL: baseUrl.api,
+  baseURL: baseUrl,
   timeout: TIME_OUT,
   headers: COMMON_HEADER
 })

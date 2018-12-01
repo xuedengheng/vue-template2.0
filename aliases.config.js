@@ -16,9 +16,7 @@ const aliases = {
 }
 
 module.exports = {
-  webpack: {
-    'vue$': 'vue/dist/vue.esm.js'
-  },
+  webpack: {},
   jest: {},
   jsconfig: {},
 }

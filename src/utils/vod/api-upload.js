@@ -1,6 +1,6 @@
 import request from '@utils/request'
-import { BASE_URL } from '@utils/config'
-const baseURL = BASE_URL
+
+const baseUrl = process.env.VUE_APP_API
 
 export default {
   /**
@@ -8,7 +8,7 @@ export default {
    * @returns {Promise.<*>}
    */
   getUploadSign() {
-    const url = `${baseURL.upload}/post_vod_sign`
+    const url = `${baseUrl}/post_vod_sign`
     return request.post(url, {}, false)
   },
   /**
@@ -17,7 +17,7 @@ export default {
    * @returns {Promise.<*>}
    */
   saveFile(data) {
-    const url = `${baseURL.upload}/api/merchant/check_default_image`
+    const url = `${baseUrl}/api/merchant/check_default_image`
     return request.post(url, data)
   }
 }

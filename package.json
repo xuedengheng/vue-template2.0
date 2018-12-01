@@ -4,7 +4,9 @@
   "author": "Ben <xuedengheng@outlook.com>",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve --mode development",
+    "release": "vue-cli-service serve --mode release",
+    "prod": "vue-cli-service serve --mode production",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:e2e": "vue-cli-service test:e2e",
