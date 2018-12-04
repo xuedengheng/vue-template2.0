@@ -8,35 +8,41 @@ export default class webimHandler {
   static sdkLogin(userInfo, listeners, options, avatar) {
     // web sdk 登录
     return new Promise((resolve, reject) => {
-      webim.login(userInfo, listeners, options, async identifierNick => {
-        // identifierNick为登录用户昵称(没有设置时，为帐号)，无登录态时为空
-        console.debug(identifierNick)
-        this.loginInfo = userInfo
-        await this.setProfilePortrait({
-          'ProfileItem': [
-            {'Tag': 'Tag_Profile_IM_Nick', 'Value': userInfo.identifierNick},
-            {'Tag': 'Tag_Profile_IM_Image', 'Value': avatar}
-          ]
-        })
-        resolve()
-        webim.Log.info('webim登录成功')
-      },
-      function (err) {
-        console.error(err.ErrorInfo)
-        reject(err)
-      })
+      webim.login(
+        userInfo,
+        listeners,
+        options,
+        async (identifierNick) => {
+          // identifierNick为登录用户昵称(没有设置时，为帐号)，无登录态时为空
+          console.debug(identifierNick)
+          this.loginInfo = userInfo
+          await this.setProfilePortrait({
+            ProfileItem: [
+              {Tag: 'Tag_Profile_IM_Nick', Value: userInfo.identifierNick},
+              {Tag: 'Tag_Profile_IM_Image', Value: avatar}
+            ]
+          })
+          resolve()
+          webim.Log.info('webim登录成功')
+        },
+        function(err) {
+          console.error(err.ErrorInfo)
+          reject(err)
+        }
+      )
     })
   }
 
   // 修改帐号名称和头像
   static setProfilePortrait(options) {
     return new Promise((resolve, reject) => {
-      webim.setProfilePortrait(options,
-        res => {
+      webim.setProfilePortrait(
+        options,
+        (res) => {
           webim.Log.info('修改昵称成功')
           resolve()
         },
-        err => {
+        (err) => {
           reject(err)
         }
       )
@@ -46,37 +52,43 @@ export default class webimHandler {
   // 获取最近联系人列表
   static getRecentContact(num = 10) {
     return new Promise((resolve, reject) => {
-      webim.getRecentContactList({
-        'Count': num // 最近的会话数 ,最大为 100
-      }, resp => {
-        if (resp.SessionItem && resp.SessionItem.length > 0) {
-          let data = Promise.all(resp.SessionItem.map(async (item) => {
-            let type = item.Type
-            if (type === webim.RECENT_CONTACT_TYPE.C2C) {
-              let typeZn = '私聊'
-              let info = await this.getCustomerMsg(item.To_Account)
-              item = {
-                type,
-                typeZn,
-                sessionId: item.To_Account,
-                avatar: info.avatar,
-                nickName: info.name,
-                lastMsg: item.MsgShow,
-                msgTimeStamp: item.MsgTimeStamp,
-                msgSeq: item.MsgSeq,
-                msgRandom: item.MsgRandom, // 消息随机数
-                unreadMsgCount: item.UnreadMsgCount
-              }
-              return item
-            }
-          }))
-          resolve(data)
+      webim.getRecentContactList(
+        {
+          Count: num // 最近的会话数 ,最大为 100
+        },
+        (resp) => {
+          if (resp.SessionItem && resp.SessionItem.length > 0) {
+            let data = Promise.all(
+              resp.SessionItem.map(async (item) => {
+                let type = item.Type
+                if (type === webim.RECENT_CONTACT_TYPE.C2C) {
+                  let typeZn = '私聊'
+                  let info = await this.getCustomerMsg(item.To_Account)
+                  item = {
+                    type,
+                    typeZn,
+                    sessionId: item.To_Account,
+                    avatar: info.avatar,
+                    nickName: info.name,
+                    lastMsg: item.MsgShow,
+                    msgTimeStamp: item.MsgTimeStamp,
+                    msgSeq: item.MsgSeq,
+                    msgRandom: item.MsgRandom, // 消息随机数
+                    unreadMsgCount: item.UnreadMsgCount
+                  }
+                  return item
+                }
+              })
+            )
+            resolve(data)
+          }
+          // 业务处理
+        },
+        (err) => {
+          // 错误回调
+          reject(err)
         }
-        // 业务处理
-      }, err => {
-        // 错误回调
-        reject(err)
-      })
+      )
     })
   }
 
@@ -97,7 +109,10 @@ export default class webimHandler {
             let content = elem.getContent() // 获取元素对象
             ext = content.getExt()
           }
-          return type === webim.MSG_ELEMENT_TYPE.TEXT || (type === webim.MSG_ELEMENT_TYPE.CUSTOM && ext * 1 === 20005)
+          return (
+            type === webim.MSG_ELEMENT_TYPE.TEXT ||
+            (type === webim.MSG_ELEMENT_TYPE.CUSTOM && ext * 1 === 20005)
+          )
         })
         let customArr = arr.filter((item) => {
           let elems = item.getElems() // 获取消息包含的元素数组
@@ -145,7 +160,7 @@ export default class webimHandler {
 
   // 监听新消息(私聊(包括普通消息、全员推送消息)，普通群(非直播聊天室)消息)事件
   // newMsgList 为新消息数组，结构为[Msg]
-  static onMsgNotify (newMsgList) {
+  static onMsgNotify(newMsgList) {
     return new Promise(async (resolve, reject) => {
       let newMsg = newMsgList[0]
       let res = await this.handlderMsg(newMsg)
@@ -155,7 +170,15 @@ export default class webimHandler {
 
   // 处理消息（私聊(包括普通消息和全员推送消息)，普通群(非直播聊天室)消息）
   static handlderMsg(msg) {
-    let fromAccount, fromAccountNick, sessType, subType, content, isSelfSend, seq, random, nameObj
+    let fromAccount,
+      fromAccountNick,
+      sessType,
+      subType,
+      content,
+      isSelfSend,
+      seq,
+      random,
+      nameObj
     return new Promise(async (resolve, reject) => {
       fromAccount = msg.getFromAccount()
       if (!fromAccount) {
@@ -181,9 +204,9 @@ export default class webimHandler {
       isSelfSend = msg.getIsSend() // 消息是否是自己发送
 
       switch (sessType) {
-        case webim.SESSION_TYPE.C2C:// 私聊消息
+        case webim.SESSION_TYPE.C2C: // 私聊消息
           switch (subType) {
-            case webim.C2C_MSG_SUB_TYPE.COMMON:// c2c普通消息
+            case webim.C2C_MSG_SUB_TYPE.COMMON: // c2c普通消息
               // 业务可以根据发送者帐号fromAccount是否为app管理员帐号，来判断c2c消息是否为全员推送消息，还是普通好友消息
               // 或者业务在发送全员推送消息时，发送自定义类型(webim.MSG_ELEMENT_TYPE.CUSTOM,即TIMCustomElem)的消息，在里面增加一个字段来标识消息是否为推送消息
               content = await this.parseMsg(msg)
@@ -193,9 +216,26 @@ export default class webimHandler {
               //   'LastedMsgTime': msg.getTime()// 消息时间戳
               // }
               // webim.c2CMsgReaded(opts)
-              let data = Object.assign({}, {fromAccount, fromAccountNick, avatar: nameObj.avatar, isSelfSend, time: msg.getTime()}, content, seq, random)
+              let data = Object.assign(
+                {},
+                {
+                  fromAccount,
+                  fromAccountNick,
+                  avatar: nameObj.avatar,
+                  isSelfSend,
+                  time: msg.getTime()
+                },
+                content,
+                seq,
+                random
+              )
               resolve(data)
-              console.error('收到一条c2c消息(好友消息或者全员推送消息): 发送人=' + fromAccountNick + ', 内容=' + content)
+              console.error(
+                '收到一条c2c消息(好友消息或者全员推送消息): 发送人=' +
+                  fromAccountNick +
+                  ', 内容=' +
+                  content
+              )
               break
           }
           break
@@ -235,41 +275,49 @@ export default class webimHandler {
   // 读取用户资料 昵称 头像
   static getCustomerMsg(fromAccount) {
     let ops = {
-      'To_Account': [fromAccount],
-      'TagList': ['Tag_Profile_IM_Nick', 'Tag_Profile_IM_Image']
+      To_Account: [fromAccount],
+      TagList: ['Tag_Profile_IM_Nick', 'Tag_Profile_IM_Image']
     }
     return new Promise((resolve, reject) => {
-      webim.getProfilePortrait(ops, (res) => {
-        let arr = res.UserProfileItem[0].ProfileItem
-        if (arr) {
-          let nickName = arr.filter((item) => {
-            return item.Tag === 'Tag_Profile_IM_Nick'
-          })[0]
-          let nickAvatar = arr.filter((item) => {
-            return item.Tag === 'Tag_Profile_IM_Image'
-          })[0]
-          resolve({name: nickName.Value, avatar: nickAvatar.Value})
-        } else {
-          resolve({name: '', avatar: ''})
+      webim.getProfilePortrait(
+        ops,
+        (res) => {
+          let arr = res.UserProfileItem[0].ProfileItem
+          if (arr) {
+            let nickName = arr.filter((item) => {
+              return item.Tag === 'Tag_Profile_IM_Nick'
+            })[0]
+            let nickAvatar = arr.filter((item) => {
+              return item.Tag === 'Tag_Profile_IM_Image'
+            })[0]
+            resolve({name: nickName.Value, avatar: nickAvatar.Value})
+          } else {
+            resolve({name: '', avatar: ''})
+          }
+        },
+        (err) => {
+          reject(err)
         }
-      }, (err) => {
-        reject(err)
-      })
+      )
     })
   }
 
   // 发送消息
   static sendMsg(msg) {
     return new Promise((resolve, reject) => {
-      webim.sendMsg(msg, resp => {
-        if (this.selType === webim.SESSION_TYPE.C2C) {
-          resolve(resp)
+      webim.sendMsg(
+        msg,
+        (resp) => {
+          if (this.selType === webim.SESSION_TYPE.C2C) {
+            resolve(resp)
+          }
+          webim.Log.info('发消息成功')
+        },
+        (err) => {
+          webim.Log.error('发消息失败:' + err.ErrorInfo)
+          reject(err)
         }
-        webim.Log.info('发消息成功')
-      }, err => {
-        webim.Log.error('发消息失败:' + err.ErrorInfo)
-        reject(err)
-      })
+      )
     })
   }
 
@@ -294,7 +342,16 @@ export default class webimHandler {
       let random = Math.round(Math.random() * 4294967296) // 消息随机数，用于去重
       let msgTime = Math.round(new Date().getTime() / 1000) // 消息时间戳
       let subType = webim.C2C_MSG_SUB_TYPE.COMMON
-      let msg = new webim.Msg(this.selSess, isSend, seq, random, msgTime, this.loginInfo.identifier, subType, this.loginInfo.identifierNick)
+      let msg = new webim.Msg(
+        this.selSess,
+        isSend,
+        seq,
+        random,
+        msgTime,
+        this.loginInfo.identifier,
+        subType,
+        this.loginInfo.identifierNick
+      )
       let textObj = new webim.Msg.Elem.Text(msgtosend)
       msg.addText(textObj)
       /** // 解析文本和表情
@@ -333,11 +390,14 @@ export default class webimHandler {
           msg.addText(textObj)
         }
       } **/
-      this.sendMsg(msg).then(res => {
-        resolve(res)
-      }, err => {
-        reject(err)
-      })
+      this.sendMsg(msg).then(
+        (res) => {
+          resolve(res)
+        },
+        (err) => {
+          reject(err)
+        }
+      )
     })
   }
 
@@ -352,34 +412,44 @@ export default class webimHandler {
       let random = Math.round(Math.random() * 4294967296) // 消息随机数，用于去重
       let msgTime = Math.round(new Date().getTime() / 1000) // 消息时间戳
       let subType = webim.C2C_MSG_SUB_TYPE.COMMON
-      let msg = new webim.Msg(this.selSess, isSend, seq, random, msgTime, this.loginInfo.identifier, subType, this.loginInfo.identifierNick)
+      let msg = new webim.Msg(
+        this.selSess,
+        isSend,
+        seq,
+        random,
+        msgTime,
+        this.loginInfo.identifier,
+        subType,
+        this.loginInfo.identifierNick
+      )
       let customObj = new webim.Msg.Elem.Custom(ops.data, ops.desc, ops.ext)
       msg.addCustom(customObj)
-      this.sendMsg(msg).then(res => {
-        resolve(res)
-      }, err => {
-        reject(err)
-      })
+      this.sendMsg(msg).then(
+        (res) => {
+          resolve(res)
+        },
+        (err) => {
+          reject(err)
+        }
+      )
     })
   }
 
-  static sendGroupMsg(msg, list) {
-
-  }
+  static sendGroupMsg(msg, list) {}
 
   // 获取C2C历史消息并设成已读状态
   // id 要拉取的好友id
   static getC2CMsgList(id) {
     let options = {
-      'Peer_Account': id, // 好友帐号
-      'MaxCnt': 1, // 拉取消息条数
+      Peer_Account: id, // 好友帐号
+      MaxCnt: 1, // 拉取消息条数
       LastMsgTime: 0, // 最近的消息时间，即从这个时间点向前拉取历史消息
       MsgKey: ''
     }
     return new Promise((resolve, reject) => {
       webim.getC2CHistoryMsgs(
         options,
-        resp => {
+        (resp) => {
           if (resp.MsgList.length === 0) {
             webim.Log.error('没有历史消息了:data=' + JSON.stringify(options))
           } else {
@@ -388,7 +458,7 @@ export default class webimHandler {
           }
           resolve('success')
         },
-        err => {
+        (err) => {
           reject(err)
         }
       )
@@ -512,7 +582,9 @@ export default class webimHandler {
           } else {
             productName = data.title
           }
-          resTxt = `${nickName}提交了拼团活动${productName}的订单,金额为${data.total}元`
+          resTxt = `${nickName}提交了拼团活动${productName}的订单,金额为${
+            data.total
+          }元`
           break
         case 30010:
           data = JSON.parse(msg.data)
@@ -521,7 +593,9 @@ export default class webimHandler {
           } else {
             productName = data.title
           }
-          resTxt = `${nickName}提交了拼团活动${productName}的订单,金额为${data.total}元,并完成支付`
+          resTxt = `${nickName}提交了拼团活动${productName}的订单,金额为${
+            data.total
+          }元,并完成支付`
           break
         case 30011:
           data = JSON.parse(msg.data)
@@ -602,7 +676,9 @@ export default class webimHandler {
           } else {
             productName = data.title
           }
-          resTxt = `${nickName}正在参加砍价活动${productName}，成功砍掉${data.total}元`
+          resTxt = `${nickName}正在参加砍价活动${productName}，成功砍掉${
+            data.total
+          }元`
           break
         case 30020:
           data = JSON.parse(msg.data)
@@ -629,7 +705,9 @@ export default class webimHandler {
           } else {
             productName = data.title
           }
-          resTxt = `${nickName}提交了砍价活动${productName}的订单,金额为${data.total}元`
+          resTxt = `${nickName}提交了砍价活动${productName}的订单,金额为${
+            data.total
+          }元`
           break
         case 30023:
           data = JSON.parse(msg.data)
@@ -638,7 +716,9 @@ export default class webimHandler {
           } else {
             productName = data.title
           }
-          resTxt = `${nickName}提交了砍价活动${productName}的订单,金额为${data.total}元，并支付成功`
+          resTxt = `${nickName}提交了砍价活动${productName}的订单,金额为${
+            data.total
+          }元，并支付成功`
           break
         case 40001:
           resTxt = `${nickName}通过扫描他人分享的服务海报查看了你的服务`
@@ -674,7 +754,9 @@ export default class webimHandler {
           } else {
             productName = data.title
           }
-          resTxt = `${nickName}提交了服务${productName}的订单,金额为${data.total}元，并完成支付`
+          resTxt = `${nickName}提交了服务${productName}的订单,金额为${
+            data.total
+          }元，并完成支付`
           break
         case 40007:
           resTxt = `${nickName}查看了你的品牌故事，请把握商机`

@@ -1,4 +1,4 @@
-import { fileType } from './file-config'
+import {fileType} from './file-config'
 
 const {IMAGE_TYPE, VIDEO_TYPE} = fileType
 const CHOICE_ERROR = '选择文件类型错误'
@@ -15,7 +15,7 @@ export function fileController(type, count = 1) {
     if (count > 1) {
       input.multiple = 'multiple'
     }
-    input['onchange'] = function () {
+    input['onchange'] = function() {
       let files = this.files
       let arr = _changeToArray(files)
       arr = arr.splice(0, count)
@@ -41,11 +41,11 @@ export function fileController(type, count = 1) {
 }
 
 function _isAllImage(arr) {
-  return arr.some(val => /image/.test(val.type))
+  return arr.some((val) => /image/.test(val.type))
 }
 
 function _isAllVideo(arr) {
-  return arr.some(val => /video/.test(val.type))
+  return arr.some((val) => /video/.test(val.type))
 }
 
 function _changeToArray(files) {
@@ -59,8 +59,8 @@ function _handleException(error) {
 // 文件类型转流
 export function createFile(options) {
   let buffer = new ArrayBuffer(options.size || 0)
-  let arr = new Uint8Array(buffer);
-  [].forEach.call(arr, function (char, i) {
+  let arr = new Uint8Array(buffer)
+  ;[].forEach.call(arr, function(char, i) {
     arr[i] = 0
   })
   let opt = {}

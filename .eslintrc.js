@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   parserOptions: {
-    sourceType: 'script',
+    sourceType: 'script'
   },
   extends: [
     // https://github.com/vuejs/eslint-plugin-vue#bulb-rules
@@ -10,7 +10,7 @@ module.exports = {
     'standard',
     // https://github.com/prettier/eslint-config-prettier
     'prettier',
-    'prettier/standard',
+    'prettier/standard'
   ],
   rules: {
     // Only allow debugger in development
@@ -31,9 +31,9 @@ module.exports = {
           'keep-alive',
           'slot',
           'router-view',
-          'router-link',
-        ],
-      },
+          'router-link'
+        ]
+      }
     ],
     'vue/multiline-html-element-content-newline': 'error',
     'vue/html-closing-bracket-spacing': 'never',
@@ -48,10 +48,10 @@ module.exports = {
         singleline: 5,
         multiline: {
           max: 5,
-          'allowFirstLine': true
+          allowFirstLine: true
         }
       }
-    ],
+    ]
   },
   overrides: [
     {
@@ -59,17 +59,17 @@ module.exports = {
       excludedFiles: 'app.config.js',
       parserOptions: {
         parser: 'babel-eslint',
-        sourceType: 'module',
+        sourceType: 'module'
       },
       env: {
-        browser: true,
-      },
+        browser: true
+      }
     },
     {
       files: ['**/*.unit.js'],
       parserOptions: {
         parser: 'babel-eslint',
-        sourceType: 'module',
+        sourceType: 'module'
       },
       env: {jest: true},
       globals: {
@@ -77,8 +77,8 @@ module.exports = {
         shallowMount: false,
         shallowMountView: false,
         createComponentMocks: false,
-        createModuleStore: false,
-      },
-    },
-  ],
+        createModuleStore: false
+      }
+    }
+  ]
 }

@@ -1,6 +1,6 @@
 import RouterViewCommon from './_base-router-view'
 const router = {
-  install (Vue) {
+  install(Vue) {
     Vue.component(RouterViewCommon.name, RouterViewCommon)
   }
 }

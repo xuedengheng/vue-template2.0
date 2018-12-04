@@ -16,24 +16,36 @@ const http = axios.create({
   headers: COMMON_HEADER
 })
 
-http.interceptors.request.use(config => {
-  // 请求数据前的拦截
-  config.headers['Authorization'] = storage.get('token', '')
-  return config
-}, error => {
-  return Promise.reject(error)
-})
+http.interceptors.request.use(
+  (config) => {
+    // 请求数据前的拦截
+    config.headers['Authorization'] = storage.get('token', '')
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
 
-http.interceptors.response.use(response => {
-  return response
-}, error => {
-  return Promise.resolve(error.response)
-})
+http.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  (error) => {
+    return Promise.resolve(error.response)
+  }
+)
 
 function checkStatus(response) {
   // _loading
   // 如果http状态码正常，则直接返回数据
-  if (response && (response.status === 200 || response.status === 201 || response.status === 304 || response.status === 422)) {
+  if (
+    response &&
+    (response.status === 200 ||
+      response.status === 201 ||
+      response.status === 304 ||
+      response.status === 422)
+  ) {
     return response
     // 如果不需要除了data之外的数据，可以直接 return response.data
   }
@@ -50,7 +62,7 @@ function checkCode(res) {
     console.warn(res.msg)
   }
   // 如果网络请求成功，而提交的数据，或者是后端的一些未知错误所导致的，可以根据实际情况进行捕获异常
-  if (res.data && (res.data.code !== ERR_OK)) {
+  if (res.data && res.data.code !== ERR_OK) {
     Utils.handleErrorType(res.data.code)
     throw requestException(res)
   }
@@ -77,11 +89,13 @@ export default {
       method: 'post',
       url,
       data // post 请求时带的参数
-    }).then((response) => {
-      return checkStatus(response)
-    }).then((res) => {
-      return checkCode(res)
     })
+      .then((response) => {
+        return checkStatus(response)
+      })
+      .then((res) => {
+        return checkCode(res)
+      })
   },
   get(url, params, loading = true) {
     Utils.showLoading(loading)
@@ -89,11 +103,13 @@ export default {
       method: 'get',
       url,
       params // get 请求时带的参数
-    }).then((response) => {
-      return checkStatus(response)
-    }).then((res) => {
-      return checkCode(res)
     })
+      .then((response) => {
+        return checkStatus(response)
+      })
+      .then((res) => {
+        return checkCode(res)
+      })
   },
   put(url, data, loading = true) {
     Utils.showLoading(loading)
@@ -101,11 +117,13 @@ export default {
       method: 'put',
       url,
       data // put 请求时带的参数
-    }).then((response) => {
-      return checkStatus(response)
-    }).then((res) => {
-      return checkCode(res)
     })
+      .then((response) => {
+        return checkStatus(response)
+      })
+      .then((res) => {
+        return checkCode(res)
+      })
   },
   delete(url, data, loading = true) {
     Utils.showLoading(loading)
@@ -113,10 +131,12 @@ export default {
       method: 'delete',
       url,
       data // put 请求时带的参数
-    }).then((response) => {
-      return checkStatus(response)
-    }).then((res) => {
-      return checkCode(res)
     })
+      .then((response) => {
+        return checkStatus(response)
+      })
+      .then((res) => {
+        return checkCode(res)
+      })
   }
 }

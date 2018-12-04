@@ -2,20 +2,12 @@ import Vue from 'vue'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 
-const requireBaseComponent = require.context(
-  '.',
-  true,
-  /_base-[\w-]+\.vue$/
-)
+const requireBaseComponent = require.context('.', true, /_base-[\w-]+\.vue$/)
 
-requireBaseComponent.keys().forEach(fileName => {
+requireBaseComponent.keys().forEach((fileName) => {
   const componentConfig = requireBaseComponent(fileName)
   const componentName = upperFirst(
-    camelCase(
-      fileName
-        .replace(/^\.\/_/, '')
-        .replace(/[\w-]+\.vue$/, '')
-    )
+    camelCase(fileName.replace(/^\.\/_/, '').replace(/[\w-]+\.vue$/, ''))
   )
   Vue.component(componentName, componentConfig.default || componentConfig)
 })
@@ -26,19 +18,16 @@ const requireGlobalComponent = require.context(
   /_global-[\w-]+\.vue$/
 )
 
-
-requireGlobalComponent.keys().forEach(fileName => {
+requireGlobalComponent.keys().forEach((fileName) => {
   const componentConfig = requireGlobalComponent(fileName)
   const componentName = camelCase(
-    fileName
-      .replace(/^\.\/_global-/, '')
-      .replace(/[\w-]+\.vue$/, '')
+    fileName.replace(/^\.\/_global-/, '').replace(/[\w-]+\.vue$/, '')
   )
 
   let plugins = {}
   plugins[componentName] = {}
 
-  plugins[componentName].install = function (vue) {
+  plugins[componentName].install = function(vue) {
     const constructor = vue.extend(componentConfig.default || componentConfig)
     const instance = new constructor()
     instance.$mount(document.createElement('div'))
@@ -47,4 +36,3 @@ requireGlobalComponent.keys().forEach(fileName => {
   }
   Vue.use(plugins[componentName])
 })
-

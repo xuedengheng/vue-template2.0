@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div v-show="showToast" class="toast">
+    <div v-if="showToast" class="toast">
       <div class="content">{{ content }}</div>
     </div>
   </transition>

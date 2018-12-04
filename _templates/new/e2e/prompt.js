@@ -5,9 +5,9 @@ module.exports = [
     message: 'Name:',
     validate(value) {
       if (!value.length) {
-        return 'Components must have a name.'
+        return '自动化测试名字不能为空'
       }
       return true
-    },
-  },
+    }
+  }
 ]

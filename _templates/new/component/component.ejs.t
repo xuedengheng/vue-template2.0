@@ -1,9 +1,9 @@
 ---
-to: "src/components/<%= h.inflection.dasherize(name).toLowerCase().slice(0, 5) === 'base-' ? '_' : '' %><%= h.inflection.dasherize(name) %>/<%= h.inflection.dasherize(name).toLowerCase().slice(0, 5) === 'base-' ? '_' : '' %><%= h.inflection.dasherize(name) %>.vue"
+to: "src/components/<%= (h.inflection.dasherize(name).toLowerCase().slice(0, 5) === 'base-' || h.inflection.dasherize(name).toLowerCase().slice(0, 7) === 'global-') ? '_' : '' %><%= h.inflection.dasherize(name) %>/<%= (h.inflection.dasherize(name).toLowerCase().slice(0, 5) === 'base-' || h.inflection.dasherize(name).toLowerCase().slice(0, 7) === 'global-') ? '_' : '' %><%= h.inflection.dasherize(name) %>.vue"
 ---
 <template>
   <div class="<%= h.inflection.dasherize(name) %>">
-
+    <%= h.inflection.dasherize(name) %>
   </div>
 </template>
 

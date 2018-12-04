@@ -2,12 +2,23 @@ module.exports = [
   {
     type: 'input',
     name: 'name',
-    message: 'Name:',
+    message: '名称:',
     validate(value) {
       if (!value.length) {
-        return 'Page components must have a name.'
+        return '页面组件名字不能为空！'
       }
       return true
-    },
+    }
   },
+  {
+    type: 'input',
+    name: 'note',
+    message: '注释',
+    validate(value) {
+      if (!value.length) {
+        return '路由注释不能为空！'
+      }
+      return true
+    }
+  }
 ]

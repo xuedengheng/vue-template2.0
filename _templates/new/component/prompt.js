@@ -7,11 +7,11 @@ module.exports = [
     message: 'Name:',
     validate(value) {
       if (!value.length) {
-        return 'Components must have a name.'
+        return '组件名字不能为空！'
       }
       const fileName = _.kebabCase(value)
       if (fileName.indexOf('-') === -1) {
-        return 'Component names should contain at least two words to avoid conflicts with existing and future HTML elements.'
+        return '为了防止与HTML原生标签冲突，所以组件名必须由两个单词组成！'
       }
       return true
     }

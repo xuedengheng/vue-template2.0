@@ -4,7 +4,7 @@ import storage from 'storage-controller'
 // import echarts from 'echarts'
 import base from '@mixins/base'
 import * as handle from './cos/handle'
-import { fileType } from './cos/file-config'
+import {fileType} from './cos/file-config'
 import * as cos from './cos/cos'
 import * as vod from './vod/vod'
 // import Toast from '@components/toast'
@@ -15,7 +15,7 @@ const ERR_OK = 0
 
 // 定义插件
 const AppPlugin = {
-  install: function () {
+  install: function() {
     Vue.mixin(base)
     // Vue.prototype.$echarts = echarts todo
     Vue.prototype.$ERR_OK = ERR_OK

@@ -14,7 +14,7 @@ if (window.Cypress) {
 export const app = new Vue({
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App)
 }).$mount('#app')
 
 if (window.Cypress) {

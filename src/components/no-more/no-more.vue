@@ -17,8 +17,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-  export default {
-  }
+const COMPONENT_NAME = 'NO_MORE'
+
+export default {
+  name: COMPONENT_NAME
+}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">

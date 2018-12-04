@@ -12,13 +12,13 @@ const aliases = {
   '@pages': 'src/pages',
   '@router': 'src/router',
   '@utils': 'src/utils',
-  '@state': 'src/state',
+  '@state': 'src/state'
 }
 
 module.exports = {
   webpack: {},
   jest: {},
-  jsconfig: {},
+  jsconfig: {}
 }
 
 for (const alias in aliases) {
@@ -51,15 +51,15 @@ fs.writeFile(
       ...jsconfigTemplate,
       compilerOptions: {
         ...(jsconfigTemplate.compilerOptions || {}),
-        paths: module.exports.jsconfig,
-      },
+        paths: module.exports.jsconfig
+      }
     }),
     {
       ...require('./.prettierrc'),
-      parser: 'json',
+      parser: 'json'
     }
   ),
-  error => {
+  (error) => {
     if (error) {
       console.error(
         'Error while creating jsconfig.json from aliases.config.js.'

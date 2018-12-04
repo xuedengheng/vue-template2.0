@@ -5,9 +5,9 @@ module.exports = [
     message: 'Name:',
     validate(value) {
       if (!value.length) {
-        return 'Utility functions must have a name.'
+        return '工具类方法名字不能为空！'
       }
       return true
-    },
-  },
+    }
+  }
 ]

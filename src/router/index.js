@@ -6,7 +6,7 @@ import routes from './routes'
 
 Vue.use(VueRouter)
 Vue.use(VueMeta, {
-  keyName: 'page',
+  keyName: 'page'
 })
 
 const router = new VueRouter({
@@ -18,7 +18,7 @@ const router = new VueRouter({
     } else {
       return {x: 0, y: 0}
     }
-  },
+  }
 })
 
 router.beforeEach((routeTo, routeFrom, next) => {

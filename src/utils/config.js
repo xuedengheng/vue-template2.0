@@ -17,6 +17,13 @@ const PROD_URL = {
   api: 'https://zhidian-api.jkweixin.com' + version
 }
 
-export const BASE_URL = env.NODE_ENV === 'production' ? PROD_URL : env.NODE_ENV === 'test' ? TEST_URL : env.NODE_ENV === 'development' ? DEV_URL : LOCAL_URL
+export const BASE_URL =
+  env.NODE_ENV === 'production'
+    ? PROD_URL
+    : env.NODE_ENV === 'test'
+      ? TEST_URL
+      : env.NODE_ENV === 'development'
+        ? DEV_URL
+        : LOCAL_URL
 
 export const ERR_OK = 0

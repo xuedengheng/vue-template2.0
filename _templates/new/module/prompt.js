@@ -5,9 +5,9 @@ module.exports = [
     message: 'Name:',
     validate(value) {
       if (!value.length) {
-        return 'Vuex modules must have a name.'
+        return '状态管理模块名字不能为空！'
       }
       return true
-    },
-  },
+    }
+  }
 ]

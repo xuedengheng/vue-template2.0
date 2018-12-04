@@ -58,7 +58,7 @@ export function formatTime(time) {
   return `${t1} ${t2}`
 }
 
-export function formatNumber (n) {
+export function formatNumber(n) {
   const str = n.toString()
   return str[1] ? str : `0${str}`
 }
@@ -66,7 +66,10 @@ export function formatNumber (n) {
 export function objDeepCopy(source) {
   let sourceCopy = source instanceof Array ? [] : {}
   for (let item in source) {
-    sourceCopy[item] = typeof source[item] === 'object' ? objDeepCopy(source[item]) : source[item]
+    sourceCopy[item] =
+      typeof source[item] === 'object'
+        ? objDeepCopy(source[item])
+        : source[item]
   }
   return sourceCopy
 }

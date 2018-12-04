@@ -3,7 +3,7 @@ to: "src/pages/<%= h.inflection.dasherize(name) %>/<%= h.inflection.dasherize(na
 ---
 <template>
   <div class="<%= h.inflection.dasherize(name) %>">
-
+    <%= h.inflection.dasherize(name) %>
   </div>
 </template>
 

@@ -3,7 +3,7 @@ import ToastComponent from 'components/toast/toast'
 const Toast = {}
 
 // 注册Toast
-Toast.install = function (Vue) {
+Toast.install = function(Vue) {
   // 生成一个Vue的子类
   // 同时这个子类也就是组件
   const ToastConstructor = Vue.extend(ToastComponent)

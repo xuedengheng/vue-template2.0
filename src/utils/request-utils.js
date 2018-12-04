@@ -17,8 +17,7 @@ export function handleErrorType(code) {
   }
 }
 
-function _toErrorPage(useType) {
-}
+function _toErrorPage(useType) {}
 
 function _handleLoseEfficacy() {
   const currentRoute = _this.$route.path

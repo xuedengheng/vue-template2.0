@@ -1,4 +1,4 @@
 module.exports = {
   title: '{{ project }}',
-  description: '{{ description }}',
+  description: '{{ description }}'
 }

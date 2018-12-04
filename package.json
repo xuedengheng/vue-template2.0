@@ -7,10 +7,20 @@
     "dev": "vue-cli-service serve --mode development",
     "release": "vue-cli-service serve --mode release",
     "prod": "vue-cli-service serve --mode production",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "test:e2e": "vue-cli-service test:e2e",
+    "build": "vue-cli-service build --modern",
+    "build:dev": "vue-cli-service build --mode development",
+    "build:release": "vue-cli-service build --mode release",
+    "build:prod": "vue-cli-service build --mode production",
+    "build:ci": "vue-cli-service build --report",
+    "lint": "run-s lint:all:*",
+    "lint:all:eslint": "eslint --fix --ext .js,.vue .",
+    "lint:all:prettier": "prettier --write --loglevel warn \"**/*.{js,json,css,vue}\"",
     "test:unit": "vue-cli-service test:unit",
+    "test:unit:file": "npm run test:unit --bail --findRelatedTests",
+    "test:unit:ci": "npm run test:unit --coverage --ci",
+    "test:e2e": "vue-cli-service test:e2e --headless",
+    "test": "run-s test:unit test:e2e",
+    "test:ci": "run-s test:unit:ci test:e2e",
     "new": "hygen new"
   },
   "dependencies": {
@@ -39,6 +49,7 @@
     "cross-env": "5.2.x",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
+    "husky": "^1.2.0",
     "hygen": "1.6.x",
     "imagemin-lint-staged": "0.3.x",
     "lint-staged": "8.0.x",
@@ -51,15 +62,5 @@
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.js": [
-      "vue-cli-service lint",
-      "git add"
-    ],
-    "*.vue": [
-      "vue-cli-service lint",
-      "git add"
-    ]
   }
 }

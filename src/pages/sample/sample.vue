@@ -28,7 +28,10 @@
   import API from '@api'
   import wx from 'weixin-js-sdk'
 
+  const PAGE_NAME = 'SAMPLE'
+
   export default {
+    name: PAGE_NAME,
     components: {
       Cropper
     },
@@ -44,11 +47,10 @@
         this.$loading.hide()
       }, 1500)
       this._getWxSdk()
-
     },
     methods: {
       createQrCode() {
-        let str = JSON.stringify({'code': 8297128291, 'store_id': 8}) // todo
+        let str = JSON.stringify({code: 8297128291, store_id: 8}) // todo
         let img = this.$createQrCode.png(str) // png
         // img = this.$createQrCode.svg(str) // svg
         this.testSrc = img
@@ -78,39 +80,43 @@
           return
         }
         switch (type) {
-          case 'images' :
+          case 'images':
             this.$refs.cropper.show(arr[0])
             break
-          case 'images-only' :
-            this.$cos.uploadFiles(this.$cosFileType.IMAGE_TYPE, arr).then((resArr) => {
-              this.$loading.hide()
-              let arr = []
-              resArr.map(item => {
-                if (item.error !== this.$ERR_OK) {
-                  return this.$toast.show(item.message)
-                }
-                let obj = {
-                  image_id: item.data.id,
-                  image_url: item.data.url,
-                  id: 0
-                }
-                arr.push(obj)
+          case 'images-only':
+            this.$cos
+              .uploadFiles(this.$cosFileType.IMAGE_TYPE, arr)
+              .then((resArr) => {
+                this.$loading.hide()
+                let arr = []
+                resArr.map((item) => {
+                  if (item.error !== this.$ERR_OK) {
+                    return this.$toast.show(item.message)
+                  }
+                  let obj = {
+                    image_id: item.data.id,
+                    image_url: item.data.url,
+                    id: 0
+                  }
+                  arr.push(obj)
+                })
+                this.testSrc = arr[0].image_url
               })
-              this.testSrc = arr[0].image_url
-            })
             break
-          case 'video' :
+          case 'video':
             this.$loading.show('视频上传中...')
-            this.$vod.uploadFiles(arr[0], curr => {
-              this.$loading.showCurr(curr)
-            }).then(res => {
-              this.$loading.hide()
-              if (res.error !== this.$ERR_OK) {
-                this.$toast.show(res.message)
-                return
-              }
-              this.testVideo = res.vod.videoUrl
-            })
+            this.$vod
+              .uploadFiles(arr[0], (curr) => {
+                this.$loading.showCurr(curr)
+              })
+              .then((res) => {
+                this.$loading.hide()
+                if (res.error !== this.$ERR_OK) {
+                  this.$toast.show(res.message)
+                  return
+                }
+                this.testVideo = res.vod.videoUrl
+              })
             break
           default:
             break
@@ -118,7 +124,9 @@
       },
       async cropperConfirm(e) {
         this.$loading.show()
-        let resArr = await this.$cos.uploadFiles(this.$cosFileType.IMAGE_TYPE, [e.file])
+        let resArr = await this.$cos.uploadFiles(this.$cosFileType.IMAGE_TYPE, [
+          e.file
+        ])
         let res = resArr[0]
         if (res.error !== this.$ERR_OK) {
           return this.$toast.show(res.message)
@@ -138,6 +146,7 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
+
   .sample
     fill-box()
       bottom: $tab-height

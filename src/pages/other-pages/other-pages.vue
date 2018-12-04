@@ -6,26 +6,28 @@
 </template>
 
 <script type="text/ecmascript-6">
-  export default {
-    name: '',
-    data() {
-      return {
-        isTwoPage: false
-      }
-    },
-    created() {
-      // todo
-      let path = this.$route.path
-      if (path !== '/other-pages') {
-        this.isTwoPage = true
-      }
-    },
-    methods: {
-      showToast() {
-        this.$toast.show('ashdahsdkajshdkad')
-      }
+const PAGE_NAME = 'OTHER_PAGE'
+
+export default {
+  name: PAGE_NAME,
+  data() {
+    return {
+      isTwoPage: false
+    }
+  },
+  created() {
+    // todo
+    let path = this.$route.path
+    if (path !== '/other-pages') {
+      this.isTwoPage = true
+    }
+  },
+  methods: {
+    showToast() {
+      this.$toast.show('ashdahsdkajshdkad')
     }
   }
+}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
