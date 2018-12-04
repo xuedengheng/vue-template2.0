@@ -5,15 +5,15 @@
 </template>
 
 <script type="text/ecmascript-6">
-const PAGE_NAME = 'LOADING'
+  const PAGE_NAME = 'LOADING'
 
-export default {
-  name: PAGE_NAME,
-  page: {
-    title: 'Loading page...',
-    meta: [{name: 'description', content: 'Loading page...'}]
+  export default {
+    name: PAGE_NAME,
+    page: {
+      title: 'Loading page...',
+      meta: [{name: 'description', content: 'Loading page...'}]
+    }
   }
-}
 </script>
 
 

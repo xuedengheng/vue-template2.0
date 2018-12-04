@@ -12,21 +12,21 @@
 </template>
 
 <script>
-const COMPONENT_NAME = 'Tab'
-const TABS = [
-  {text: 'sample', path: '/sample', id: 1, iconClass: 'icon-shop'},
-  {text: 'world', path: '/other-pages', id: 2, iconClass: 'icon-radar'}
+  const COMPONENT_NAME = 'Tab'
+  const TABS = [
+    {text: 'sample', path: '/sample', id: 1, iconClass: 'icon-shop'},
+    {text: 'world', path: '/other-pages', id: 2, iconClass: 'icon-radar'}
   // {text: '我的', path: '/mine', id: 3, iconClass: 'icon-mine'} todo
-]
+  ]
 
-export default {
-  name: COMPONENT_NAME,
-  data() {
-    return {
-      tabList: TABS
+  export default {
+    name: COMPONENT_NAME,
+    data() {
+      return {
+        tabList: TABS
+      }
     }
   }
-}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">

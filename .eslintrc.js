@@ -12,6 +12,7 @@ module.exports = {
     'prettier',
     'prettier/standard'
   ],
+  plugins: ['vue', 'prettier'],
   rules: {
     // Only allow debugger in development
     'no-debugger': process.env.PRE_COMMIT ? 'error' : 'off',
@@ -35,12 +36,12 @@ module.exports = {
         ]
       }
     ],
-    'vue/multiline-html-element-content-newline': 'error',
-    'vue/html-closing-bracket-spacing': 'never',
-    'vue/singleline-html-element-content-newline': 'never',
-    'vue/no-spaces-around-equal-signs-in-attribute': 'never',
-    'vue/html-self-closing': 'never',
-    'vue/script-indent': ['off', null, {baseIndent: 0}],
+    'vue/multiline-html-element-content-newline': 2,
+    'vue/html-closing-bracket-spacing': 0,
+    'vue/singleline-html-element-content-newline': 0,
+    'vue/no-spaces-around-equal-signs-in-attribute': 0,
+    'vue/html-self-closing': 0,
+    'vue/script-indent': ['error', 2, {baseIndent: 1}],
     'vue/attribute-hyphenation': ['error', 'never'],
     'vue/max-attributes-per-line': [
       'error',

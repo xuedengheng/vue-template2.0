@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isShow" id="loading" class="weui_loading_toast" style="display: block" >
+  <div v-if="isShow" id="loading" class="weui_loading_toast" style="display: block">
     <div class="weui_mask_transparent"></div>
     <div class="weui_toast">
       <div class="weui-loading-box">
@@ -14,34 +14,34 @@
 </template>
 
 <script type="text/ecmascript-6">
-const COMPONENT_NAME = 'GLOBAL_LOADING'
+  const COMPONENT_NAME = 'GLOBAL_LOADING'
 
-export default {
-  name: COMPONENT_NAME,
-  data() {
-    return {
-      content: '数据加载中',
-      isShow: false
-    }
-  },
-  methods: {
-    show(content) {
-      if (content) {
-        this.content = content
-      }
-      if (!this.isShow) {
-        this.isShow = true
+  export default {
+    name: COMPONENT_NAME,
+    data() {
+      return {
+        content: '数据加载中',
+        isShow: false
       }
     },
-    hide() {
-      this.content = '数据加载中'
-      this.isShow = false
-    },
-    showCurr(curr) {
-      this.content = `上传中...${curr}%`
+    methods: {
+      show(content) {
+        if (content) {
+          this.content = content
+        }
+        if (!this.isShow) {
+          this.isShow = true
+        }
+      },
+      hide() {
+        this.content = '数据加载中'
+        this.isShow = false
+      },
+      showCurr(curr) {
+        this.content = `上传中...${curr}%`
+      }
     }
   }
-}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">

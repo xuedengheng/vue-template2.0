@@ -7,15 +7,15 @@
 </template>
 
 <script type="text/ecmascript-6">
-const PAGE_NAME = 'TIMEOUT'
+  const PAGE_NAME = 'TIMEOUT'
 
-export default {
-  name: PAGE_NAME,
-  page: {
-    title: 'Page timeout',
-    meta: [{name: 'description', content: 'The page timed out while _loading.'}]
+  export default {
+    name: PAGE_NAME,
+    page: {
+      title: 'Page timeout',
+      meta: [{name: 'description', content: 'The page timed out while _loading.'}]
+    }
   }
-}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">

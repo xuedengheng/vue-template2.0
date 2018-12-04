@@ -8,28 +8,28 @@
 </template>
 
 <script type="text/ecmascript-6">
-const COMPONENT_NAME = 'BASE_ROUTER_VIEW'
+  const COMPONENT_NAME = 'BASE_ROUTER_VIEW'
 
-export default {
-  name: COMPONENT_NAME,
-  data() {
-    return {
-      keepAlive: false,
-      transitionType: 'slide'
-    }
-  },
-  watch: {
-    $route(to, from) {
-      this.keepAlive = to.meta.keepAlive
+  export default {
+    name: COMPONENT_NAME,
+    data() {
+      return {
+        keepAlive: false,
+        transitionType: 'slide'
+      }
+    },
+    watch: {
+      $route(to, from) {
+        this.keepAlive = to.meta.keepAlive
       // this.transitionType = 'out'
-    }
-  },
-  methods: {
-    refresh() {
-      this.$emit('refresh', ...arguments)
+      }
+    },
+    methods: {
+      refresh() {
+        this.$emit('refresh', ...arguments)
+      }
     }
   }
-}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">

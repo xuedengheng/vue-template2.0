@@ -28,50 +28,50 @@
 </template>
 
 <script type="text/ecmascript-6">
-import VueCropper from 'vue-cropperjs'
+  import VueCropper from 'vue-cropperjs'
 
-const COMPONENT_NAME = 'CROPPER'
+  const COMPONENT_NAME = 'CROPPER'
 
-export default {
-  name: COMPONENT_NAME,
-  components: {
-    VueCropper
-  },
-  props: {
-    aspect: {
-      type: Number,
-      default: 4 / 3
-    }
-  },
-  data() {
-    return {
-      visible: false,
-      status: false,
-      img: '',
-      imgType: 'image/jpeg',
-      file: null
-    }
-  },
-  methods: {
-    show(file) {
-      this.visible = true
-      let img = this.$handle.getObjectURL(file)
-      this.file = file
-      this.img = img
-      this.imgType = file.type || 'image/jpeg'
-      this.$refs.myCropper.replace(img)
+  export default {
+    name: COMPONENT_NAME,
+    components: {
+      VueCropper
     },
-    confirm() {
-      let src = this.$refs.myCropper.getCroppedCanvas().toDataURL(this.imgType)
-      let blob = this.$handle.getBlobBydataURI(src, this.imgType)
-      let formData = this.$handle.createFormData(blob, this.imgType)
-      this.$emit('confirm', {src, blob, formData, file: blob})
+    props: {
+      aspect: {
+        type: Number,
+        default: 4 / 3
+      }
     },
-    cancel() {
-      this.visible = false
+    data() {
+      return {
+        visible: false,
+        status: false,
+        img: '',
+        imgType: 'image/jpeg',
+        file: null
+      }
+    },
+    methods: {
+      show(file) {
+        this.visible = true
+        let img = this.$handle.getObjectURL(file)
+        this.file = file
+        this.img = img
+        this.imgType = file.type || 'image/jpeg'
+        this.$refs.myCropper.replace(img)
+      },
+      confirm() {
+        let src = this.$refs.myCropper.getCroppedCanvas().toDataURL(this.imgType)
+        let blob = this.$handle.getBlobBydataURI(src, this.imgType)
+        let formData = this.$handle.createFormData(blob, this.imgType)
+        this.$emit('confirm', {src, blob, formData, file: blob})
+      },
+      cancel() {
+        this.visible = false
+      }
     }
   }
-}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">

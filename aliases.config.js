@@ -10,6 +10,7 @@ const aliases = {
   '@design': 'src/design/index.styl',
   '@components': 'src/components',
   '@pages': 'src/pages',
+  '@mixins': 'src/mixins',
   '@router': 'src/router',
   '@utils': 'src/utils',
   '@state': 'src/state'

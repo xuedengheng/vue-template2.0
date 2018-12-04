@@ -54,9 +54,9 @@
         let img = this.$createQrCode.png(str) // png
         // img = this.$createQrCode.svg(str) // svg
         this.testSrc = img
-        // this.$createQrCode.pngAsync(str, pic => { // 异步 todo
-        //   this.testSrc = pic
-        // })
+      // this.$createQrCode.pngAsync(str, pic => { // 异步 todo
+      //   this.testSrc = pic
+      // })
       },
       _getWxSdk() {
         let url = window.location.href
@@ -80,46 +80,46 @@
           return
         }
         switch (type) {
-          case 'images':
-            this.$refs.cropper.show(arr[0])
-            break
-          case 'images-only':
-            this.$cos
-              .uploadFiles(this.$cosFileType.IMAGE_TYPE, arr)
-              .then((resArr) => {
-                this.$loading.hide()
-                let arr = []
-                resArr.map((item) => {
-                  if (item.error !== this.$ERR_OK) {
-                    return this.$toast.show(item.message)
-                  }
-                  let obj = {
-                    image_id: item.data.id,
-                    image_url: item.data.url,
-                    id: 0
-                  }
-                  arr.push(obj)
-                })
-                this.testSrc = arr[0].image_url
-              })
-            break
-          case 'video':
-            this.$loading.show('视频上传中...')
-            this.$vod
-              .uploadFiles(arr[0], (curr) => {
-                this.$loading.showCurr(curr)
-              })
-              .then((res) => {
-                this.$loading.hide()
-                if (res.error !== this.$ERR_OK) {
-                  this.$toast.show(res.message)
-                  return
+        case 'images':
+          this.$refs.cropper.show(arr[0])
+          break
+        case 'images-only':
+          this.$cos
+            .uploadFiles(this.$cosFileType.IMAGE_TYPE, arr)
+            .then((resArr) => {
+              this.$loading.hide()
+              let arr = []
+              resArr.map((item) => {
+                if (item.error !== this.$ERR_OK) {
+                  return this.$toast.show(item.message)
                 }
-                this.testVideo = res.vod.videoUrl
+                let obj = {
+                  image_id: item.data.id,
+                  image_url: item.data.url,
+                  id: 0
+                }
+                arr.push(obj)
               })
-            break
-          default:
-            break
+              this.testSrc = arr[0].image_url
+            })
+          break
+        case 'video':
+          this.$loading.show('视频上传中...')
+          this.$vod
+            .uploadFiles(arr[0], (curr) => {
+              this.$loading.showCurr(curr)
+            })
+            .then((res) => {
+              this.$loading.hide()
+              if (res.error !== this.$ERR_OK) {
+                this.$toast.show(res.message)
+                return
+              }
+              this.testVideo = res.vod.videoUrl
+            })
+          break
+        default:
+          break
         }
       },
       async cropperConfirm(e) {

@@ -5,14 +5,14 @@
 </template>
 
 <script type="text/ecmascript-6">
-const PAGE_NAME = 'TEST_PAGE1'
+  const PAGE_NAME = 'TEST_PAGE1'
 
-export default {
-  name: PAGE_NAME,
-  data() {
-    return {}
+  export default {
+    name: PAGE_NAME,
+    data() {
+      return {}
+    }
   }
-}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">

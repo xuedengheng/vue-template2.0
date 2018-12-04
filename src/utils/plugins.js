@@ -7,14 +7,12 @@ import * as handle from './cos/handle'
 import {fileType} from './cos/file-config'
 import * as cos from './cos/cos'
 import * as vod from './vod/vod'
-// import Toast from '@components/toast'
-// import Loading from '@components/_loading'
 import createQrCode from './create-qr-code'
 
 const ERR_OK = 0
 
 // 定义插件
-const AppPlugin = {
+export const Plugins = {
   install: function() {
     Vue.mixin(base)
     // Vue.prototype.$echarts = echarts todo
@@ -28,7 +26,4 @@ const AppPlugin = {
   }
 }
 // 使用插件
-Vue.use(AppPlugin)
 // Vue.use(AwesomePicker) todo
-// Vue.use(Toast)
-// Vue.use(Loading)

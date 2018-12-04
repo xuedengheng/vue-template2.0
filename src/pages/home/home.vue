@@ -6,20 +6,20 @@
 </template>
 
 <script type="text/ecmascript-6">
-import Tab from '@components/tab/tab'
+  import Tab from '@components/tab/tab'
 
-const PAGE_NAME = 'HOME'
+  const PAGE_NAME = 'HOME'
 
-export default {
-  name: PAGE_NAME,
-  page: {
-    title: 'Home',
-    meta: [{name: 'description', content: 'description'}]
-  },
-  components: {
-    Tab
+  export default {
+    name: PAGE_NAME,
+    page: {
+      title: 'Home',
+      meta: [{name: 'description', content: 'description'}]
+    },
+    components: {
+      Tab
+    }
   }
-}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
