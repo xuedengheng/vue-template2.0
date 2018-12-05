@@ -11,6 +11,7 @@ module.exports = {
     sourceMap: true
   },
   devServer: {
+    port: {{ port }},
     ...(process.env.VUE_APP_API
       ? // 代理生产地址.
         {
