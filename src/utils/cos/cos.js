@@ -1,15 +1,13 @@
 import request from '@utils/request'
 import storage from 'storage-controller'
 
-const baseUrl = process.env.VUE_APP_API
-
 /**
  * 数据入库
  * @param data
  * @returns {Promise.<*>}
  */
 function _saveFile(data) {
-  const url = `${baseUrl}/api/cos/file`
+  const url = `/api/cos/file`
   return request.post(url, data)
 }
 
@@ -25,7 +23,7 @@ function _getAuthorization(options, callback) {
   // const pathname = key.indexOf('/') === 0 ? key : '/' + key
   const pathname = key
   const Authorization = storage.get('token')
-  const url = baseUrl + '/api/cos/temp/signature?method=' + method + '&image=' + encodeURIComponent(pathname)
+  const url = '/api/cos/temp/signature?method=' + method + '&image=' + encodeURIComponent(pathname)
   const xhr = new XMLHttpRequest()
   xhr.open('GET', url, true)
   xhr.setRequestHeader('Authorization', Authorization)

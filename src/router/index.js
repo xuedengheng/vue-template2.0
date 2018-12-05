@@ -4,6 +4,8 @@ import VueMeta from 'vue-meta'
 import NProgress from 'nprogress/nprogress'
 import routes from './routes'
 
+NProgress.configure({showSpinner: false})
+
 Vue.use(VueRouter)
 Vue.use(VueMeta, {
   keyName: 'page'

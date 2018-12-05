@@ -31,6 +31,9 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
+
+  $tab-height=50px
+
   .tab
     position: fixed
     bottom: 0

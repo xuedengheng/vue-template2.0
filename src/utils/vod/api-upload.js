@@ -1,14 +1,12 @@
 import request from '@utils/request'
 
-const baseUrl = process.env.VUE_APP_API
-
 export default {
   /**
    * 获取签名
    * @returns {Promise.<*>}
    */
   getUploadSign() {
-    const url = `${baseUrl}/post_vod_sign`
+    const url = `/post_vod_sign`
     return request.post(url, {}, false)
   },
   /**
@@ -17,7 +15,7 @@ export default {
    * @returns {Promise.<*>}
    */
   saveFile(data) {
-    const url = `${baseUrl}/api/merchant/check_default_image`
+    const url = `/api/merchant/check_default_image`
     return request.post(url, data)
   }
 }

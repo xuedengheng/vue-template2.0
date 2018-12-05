@@ -2,7 +2,6 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from '@router'
 import store from '@state/store'
-import './design/_globals.styl'
 import '@components/_globals'
 import {Plugins} from '@utils/plugins'
 

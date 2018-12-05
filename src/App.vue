@@ -11,11 +11,19 @@
     page: {
       titleTemplate(title) {
         title = typeof title === 'function' ? title(this.$store) : title
-        return title ? `${title} | ${appConfig.title}` : appConfig.title
+        return title || appConfig.title
       }
     }
   }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus">
+  @import "./design/_globals.styl"
+  @import "~nprogress/nprogress.css"
+
+  #nprogress .bar
+    background: red !important
+
+  #nprogress .peg
+    box-shadow: 0 0 10px red, 0 0 5px red !important
 </style>

@@ -13,9 +13,7 @@
     <video v-if="testVideo" :src="testVideo" style="width: 100vw"></video>
     <hr>
     <h1>二维码</h1>
-    <button @click="createQrCode">
-      生成二维码
-    </button>
+    <button @click="createQrCode">生成二维码</button>
     <router-link tag="h1" to="/hello-world/other-pages">
       跳其他页面
     </router-link>
