@@ -8,7 +8,7 @@
           <img width="38" height="38" src="./loading.gif">
         </div>
       </div>
-      <p class="weui_toast_content">{{ content }}</p>
+      <p class="weui_toast_content">{{content}}</p>
     </div>
   </div>
 </template>

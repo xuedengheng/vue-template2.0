@@ -48,7 +48,7 @@
     "babel-jest": "^23.6.0",
     "cross-env": "5.2.x",
     "eslint": "^5.8.0",
-    "eslint-plugin-vue": "^5.0.0-0",
+    "eslint-plugin-vue": "5.0.0",
     "husky": "^1.2.0",
     "hygen": "1.6.x",
     "imagemin-lint-staged": "0.3.x",

@@ -58,11 +58,7 @@
       if (value + 1 >= TWO_PWR_63_DBL) return MAX_VALUE
     }
     if (value < 0) return fromNumber(-value, unsigned).neg()
-    return fromBits(
-      value % TWO_PWR_32_DBL | 0,
-      (value / TWO_PWR_32_DBL) | 0,
-      unsigned
-    )
+    return fromBits(value % TWO_PWR_32_DBL | 0, (value / TWO_PWR_32_DBL) | 0, unsigned)
   }
   Long.fromNumber = fromNumber
 
@@ -74,13 +70,7 @@
 
   function fromString(str, unsigned, radix) {
     if (str.length === 0) throw Error('empty string')
-    if (
-      str === 'NaN' ||
-      str === 'Infinity' ||
-      str === '+Infinity' ||
-      str === '-Infinity'
-    )
-      return ZERO
+    if (str === 'NaN' || str === 'Infinity' || str === '+Infinity' || str === '-Infinity') return ZERO
     if (typeof unsigned === 'number') {
       // For goog.math.long compatibility
       ;(radix = unsigned), (unsigned = false)
@@ -149,8 +139,7 @@
     return this.unsigned ? this.low >>> 0 : this.low
   }
   LongPrototype.toNumber = function toNumber() {
-    if (this.unsigned)
-      return (this.high >>> 0) * TWO_PWR_32_DBL + (this.low >>> 0)
+    if (this.unsigned) return (this.high >>> 0) * TWO_PWR_32_DBL + (this.low >>> 0)
     return this.high * TWO_PWR_32_DBL + (this.low >>> 0)
   }
 
@@ -221,12 +210,7 @@
   }
   LongPrototype.equals = function equals(other) {
     if (!isLong(other)) other = fromValue(other)
-    if (
-      this.unsigned !== other.unsigned &&
-      this.high >>> 31 === 1 &&
-      other.high >>> 31 === 1
-    )
-      return false
+    if (this.unsigned !== other.unsigned && this.high >>> 31 === 1 && other.high >>> 31 === 1) return false
     return this.high === other.high && this.low === other.low
   }
   LongPrototype.eq = LongPrototype.equals
@@ -319,10 +303,7 @@
     // At this point the sign bits are the same
     if (!this.unsigned) return this.sub(other).isNegative() ? -1 : 1
     // Both are positive if at least one is unsigned
-    return other.high >>> 0 > this.high >>> 0 ||
-      (other.high === this.high && other.low >>> 0 > this.low >>> 0)
-      ? -1
-      : 1
+    return other.high >>> 0 > this.high >>> 0 || (other.high === this.high && other.low >>> 0 > this.low >>> 0) ? -1 : 1
   }
 
   /**
@@ -635,11 +616,7 @@
     if (isLong(numBits)) numBits = numBits.toInt()
     if ((numBits &= 63) === 0) return this
     else if (numBits < 32)
-      return fromBits(
-        this.low << numBits,
-        (this.high << numBits) | (this.low >>> (32 - numBits)),
-        this.unsigned
-      )
+      return fromBits(this.low << numBits, (this.high << numBits) | (this.low >>> (32 - numBits)), this.unsigned)
     else return fromBits(0, this.low << (numBits - 32), this.unsigned)
   }
 
@@ -660,17 +637,8 @@
     if (isLong(numBits)) numBits = numBits.toInt()
     if ((numBits &= 63) === 0) return this
     else if (numBits < 32)
-      return fromBits(
-        (this.low >>> numBits) | (this.high << (32 - numBits)),
-        this.high >> numBits,
-        this.unsigned
-      )
-    else
-      return fromBits(
-        this.high >> (numBits - 32),
-        this.high >= 0 ? 0 : -1,
-        this.unsigned
-      )
+      return fromBits((this.low >>> numBits) | (this.high << (32 - numBits)), this.high >> numBits, this.unsigned)
+    else return fromBits(this.high >> (numBits - 32), this.high >= 0 ? 0 : -1, this.unsigned)
   }
 
   /**
@@ -694,11 +662,7 @@
       var high = this.high
       if (numBits < 32) {
         var low = this.low
-        return fromBits(
-          (low >>> numBits) | (high << (32 - numBits)),
-          high >>> numBits,
-          this.unsigned
-        )
+        return fromBits((low >>> numBits) | (high << (32 - numBits)), high >>> numBits, this.unsigned)
       } else if (numBits === 32) return fromBits(high, 0, this.unsigned)
       else return fromBits(high >>> (numBits - 32), 0, this.unsigned)
     }
@@ -1268,16 +1232,7 @@ var webim = {
      *
      *
      */
-  Msg: function(
-    sess,
-    isSend,
-    seq,
-    random,
-    time,
-    fromAccount,
-    subType,
-    fromAccountNick
-  ) {
+  Msg: function(sess, isSend, seq, random, time, fromAccount, subType, fromAccountNick) {
     /*Class constructor*/
   },
 
@@ -1927,10 +1882,7 @@ var webim = {
         's+': date.getSeconds() //秒
       }
       if (/(y+)/.test(format)) {
-        formatTime = format.replace(
-          RegExp.$1,
-          (date.getFullYear() + '').substr(4 - RegExp.$1.length)
-        )
+        formatTime = format.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
       } else {
         formatTime = format
       }
@@ -1938,9 +1890,7 @@ var webim = {
         if (new RegExp('(' + k + ')').test(formatTime))
           formatTime = formatTime.replace(
             RegExp.$1,
-            RegExp.$1.length == 1
-              ? o[k]
-              : ('00' + o[k]).substr(('' + o[k]).length)
+            RegExp.$1.length == 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length)
           )
       }
       return formatTime
@@ -2152,14 +2102,11 @@ var webim = {
     this.setCookie = function(name, value, expires, path, domain) {
       var exp = new Date()
       exp.setTime(exp.getTime() + expires * 1000)
-      document.cookie =
-        name + '=' + escape(value) + ';expires=' + exp.toGMTString()
+      document.cookie = name + '=' + escape(value) + ';expires=' + exp.toGMTString()
     }
     //获取cookie
     this.getCookie = function(name) {
-      var result = document.cookie.match(
-        new RegExp('(^| )' + name + '=([^;]*)(;|$)')
-      )
+      var result = document.cookie.match(new RegExp('(^| )' + name + '=([^;]*)(;|$)'))
       if (result != null) {
         return unescape(result[2])
       }
@@ -2170,9 +2117,7 @@ var webim = {
       var exp = new Date()
       exp.setTime(exp.getTime() - 1)
       var value = this.getCookie(name)
-      if (value != null)
-        document.cookie =
-          name + '=' + escape(value) + ';expires=' + exp.toGMTString()
+      if (value != null) document.cookie = name + '=' + escape(value) + ';expires=' + exp.toGMTString()
     }
     //根据名字获取url参数值
     this.getQueryString = function(name) {
@@ -2209,10 +2154,7 @@ var webim = {
         //ie10的判断这里有个问题
         // Mozilla/5.0 (compatible; MSIE 9.0; qdesk 2.5.1277.202; Windows NT 6.1; WOW64; Trident/6.0)
         // 是IE10 而不是IE9
-        if (
-          ua.match(/trident\/(\d)\./) &&
-          ua.match(/trident\/(\d)\./)[1] == 6
-        ) {
+        if (ua.match(/trident\/(\d)\./) && ua.match(/trident\/(\d)\./)[1] == 6) {
           Sys.ie = 10
         }
         return {
@@ -2262,10 +2204,7 @@ var webim = {
           if (json[keyMap[a]] instanceof Array) {
             var len = json[keyMap[a]].length
             for (var i = 0; i < len; i++) {
-              json[keyMap[a]][i] = this.replaceObject(
-                keyMap,
-                json[keyMap[a]][i]
-              )
+              json[keyMap[a]][i] = this.replaceObject(keyMap, json[keyMap[a]][i])
             }
           } else if (typeof json[keyMap[a]] === 'object') {
             json[keyMap[a]] = this.replaceObject(keyMap, json[keyMap[a]])
@@ -2351,16 +2290,7 @@ var webim = {
     return xmlhttp
   }
   //发起ajax请求
-  var ajaxRequest = function(
-    meth,
-    url,
-    req,
-    timeout,
-    content_type,
-    isLongPolling,
-    cbOk,
-    cbErr
-  ) {
+  var ajaxRequest = function(meth, url, req, timeout, content_type, isLongPolling, cbOk, cbErr) {
     var xmlHttpObj = getXmlHttp()
 
     var error, errInfo
@@ -2417,16 +2347,7 @@ var webim = {
     xmlHttpObj.send(req)
   }
   //发起ajax请求（json格式数据）
-  var ajaxRequestJson = function(
-    meth,
-    url,
-    req,
-    timeout,
-    content_type,
-    isLongPolling,
-    cbOk,
-    cbErr
-  ) {
+  var ajaxRequestJson = function(meth, url, req, timeout, content_type, isLongPolling, cbOk, cbErr) {
     ajaxRequest(
       meth,
       url,
@@ -2503,23 +2424,14 @@ var webim = {
 
     if (isLogin()) {
       if (cmd == 'login') {
-        url +=
-          '&identifier=' +
-          encodeURIComponent(ctx.identifier) +
-          '&usersig=' +
-          ctx.userSig
+        url += '&identifier=' + encodeURIComponent(ctx.identifier) + '&usersig=' + ctx.userSig
       } else {
         if (ctx.tinyid && ctx.a2) {
           url += '&tinyid=' + ctx.tinyid + '&a2=' + ctx.a2
         } else {
           if (cbErr) {
             log.error('tinyid或a2为空[' + srvName + '][' + cmd + ']')
-            cbErr(
-              tool.getReturnError(
-                'tinyid或a2为空[' + srvName + '][' + cmd + ']',
-                -5
-              )
-            )
+            cbErr(tool.getReturnError('tinyid或a2为空[' + srvName + '][' + cmd + ']', -5))
             return false
           }
         }
@@ -2527,14 +2439,7 @@ var webim = {
       url += '&contenttype=' + ctx.contentType
     }
     url +=
-      '&sdkappid=' +
-      ctx.sdkAppID +
-      '&accounttype=' +
-      ctx.accountType +
-      '&apn=' +
-      ctx.apn +
-      '&reqtime=' +
-      unixtime()
+      '&sdkappid=' + ctx.sdkAppID + '&accounttype=' + ctx.accountType + '&apn=' + ctx.apn + '&reqtime=' + unixtime()
     return url
   }
 
@@ -2593,15 +2498,7 @@ var webim = {
   }
 
   //获取文件下载地址
-  var getFileDownUrlV2 = function(
-    uuid,
-    senderId,
-    fileName,
-    downFlag,
-    receiverId,
-    busiId,
-    type
-  ) {
+  var getFileDownUrlV2 = function(uuid, senderId, fileName, downFlag, receiverId, busiId, type) {
     var options = {
       From_Account: senderId, //"identifer_0",       // 类型: String, 发送者tinyid
       To_Account: receiverId, //"identifer_1",         // 类型: String, 接收者tinyid
@@ -2771,9 +2668,7 @@ var webim = {
   var initBrowserInfo = function() {
     //初始化浏览器类型
     BROWSER_INFO = tool.getBrowserInfo()
-    log.info(
-      'BROWSER_INFO: type=' + BROWSER_INFO.type + ', ver=' + BROWSER_INFO.ver
-    )
+    log.info('BROWSER_INFO: type=' + BROWSER_INFO.type + ', ver=' + BROWSER_INFO.ver)
     if (BROWSER_INFO.type == 'ie') {
       if (parseInt(BROWSER_INFO.ver) < 10) {
         lowerBR = true
@@ -2783,11 +2678,7 @@ var webim = {
 
   //接口质量上报
   var reportApiQuality = function(cmd, errorCode, errorInfo) {
-    if (
-      cmd == 'longpolling' &&
-      (errorCode == longPollingTimeOutErrorCode ||
-        errorCode == longPollingKickedErrorCode)
-    ) {
+    if (cmd == 'longpolling' && (errorCode == longPollingTimeOutErrorCode || errorCode == longPollingKickedErrorCode)) {
       //longpolling 返回60008错误可以视为正常,可以不上报
       return
     }
@@ -2800,11 +2691,9 @@ var webim = {
         ErrMsg: errorInfo
       }
       if (ctx.a2) {
-        uniqKey =
-          ctx.a2.substring(0, 10) + '_' + reportTime + '_' + createRandom()
+        uniqKey = ctx.a2.substring(0, 10) + '_' + reportTime + '_' + createRandom()
       } else if (ctx.userSig) {
-        uniqKey =
-          ctx.userSig.substring(0, 10) + '_' + reportTime + '_' + createRandom()
+        uniqKey = ctx.userSig.substring(0, 10) + '_' + reportTime + '_' + createRandom()
       }
 
       if (uniqKey) {
@@ -3080,46 +2969,21 @@ var webim = {
       ConnManager.apiCall(SRV_NAME.OPEN_IM, 'sendmsg', msgInfo, cbOk, cbErr)
     } else if (msg.sess.type() == SESSION_TYPE.GROUP) {
       //群聊
-      ConnManager.apiCall(
-        SRV_NAME.GROUP,
-        'send_group_msg',
-        msgInfo,
-        cbOk,
-        cbErr
-      )
+      ConnManager.apiCall(SRV_NAME.GROUP, 'send_group_msg', msgInfo, cbOk, cbErr)
     }
   }
   //长轮询接口
   var proto_longPolling = function(options, cbOk, cbErr) {
-    if (
-      !isAccessFormaEnvironment &&
-      typeof stopPolling != 'undefined' &&
-      stopPolling == true
-    ) {
+    if (!isAccessFormaEnvironment && typeof stopPolling != 'undefined' && stopPolling == true) {
       return
     }
     if (!checkLogin(cbErr, true)) return
-    ConnManager.apiCall(
-      SRV_NAME.OPEN_IM,
-      'longpolling',
-      options,
-      cbOk,
-      cbErr,
-      longPollingDefaultTimeOut,
-      true
-    )
+    ConnManager.apiCall(SRV_NAME.OPEN_IM, 'longpolling', options, cbOk, cbErr, longPollingDefaultTimeOut, true)
   }
 
   //长轮询接口(拉取直播聊天室新消息)
   var proto_bigGroupLongPolling = function(options, cbOk, cbErr, timeout) {
-    ConnManager.apiCall(
-      SRV_NAME.BIG_GROUP_LONG_POLLING,
-      'get_msg',
-      options,
-      cbOk,
-      cbErr,
-      timeout
-    )
+    ConnManager.apiCall(SRV_NAME.BIG_GROUP_LONG_POLLING, 'get_msg', options, cbOk, cbErr, timeout)
   }
 
   //拉取未读c2c消息接口
@@ -3294,13 +3158,7 @@ var webim = {
   var proto_modifyGroupBaseInfo = function(options, cbOk, cbErr) {
     if (!checkLogin(cbErr, true)) return
 
-    ConnManager.apiCall(
-      SRV_NAME.GROUP,
-      'modify_group_base_info',
-      options,
-      cbOk,
-      cbErr
-    )
+    ConnManager.apiCall(SRV_NAME.GROUP, 'modify_group_base_info', options, cbOk, cbErr)
   }
 
   //申请加群
@@ -3353,8 +3211,7 @@ var webim = {
             cbErr &&
               cbErr(
                 tool.getReturnError(
-                  'Join Group succeed; But the type of group is not AVChatRoom: groupid=' +
-                    options.GroupId,
+                  'Join Group succeed; But the type of group is not AVChatRoom: groupid=' + options.GroupId,
                   -12
                 )
               )
@@ -3526,8 +3383,7 @@ var webim = {
             var errorCode = resp.GroupInfo[i].ErrorCode
             if (errorCode > 0) {
               resp.ActionStatus = ACTION_STATUS.FAIL
-              resp.GroupInfo[i].ErrorInfo =
-                '[' + errorCode + ']' + resp.GroupInfo[i].ErrorInfo
+              resp.GroupInfo[i].ErrorInfo = '[' + errorCode + ']' + resp.GroupInfo[i].ErrorInfo
               resp.ErrorInfo += resp.GroupInfo[i].ErrorInfo + '\n'
             }
           }
@@ -3557,12 +3413,10 @@ var webim = {
       }
     }
     if (options.AppDefinedDataFilter_Group) {
-      opt.ResponseFilter.AppDefinedDataFilter_Group =
-        options.AppDefinedDataFilter_Group
+      opt.ResponseFilter.AppDefinedDataFilter_Group = options.AppDefinedDataFilter_Group
     }
     if (options.AppDefinedDataFilter_GroupMember) {
-      opt.ResponseFilter.AppDefinedDataFilter_GroupMember =
-        options.AppDefinedDataFilter_GroupMember
+      opt.ResponseFilter.AppDefinedDataFilter_GroupMember = options.AppDefinedDataFilter_GroupMember
     }
     ConnManager.apiCall(SRV_NAME.GROUP, 'get_group_info', opt, cbOk, cbErr)
   }
@@ -3581,8 +3435,7 @@ var webim = {
         Limit: options.Limit,
         MemberInfoFilter: options.MemberInfoFilter,
         MemberRoleFilter: options.MemberRoleFilter,
-        AppDefinedDataFilter_GroupMember:
-          options.AppDefinedDataFilter_GroupMember
+        AppDefinedDataFilter_GroupMember: options.AppDefinedDataFilter_GroupMember
       },
       cbOk,
       cbErr
@@ -3637,13 +3490,7 @@ var webim = {
       //群成员维度的自定义字段，默认情况是没有的，需要开通
       opt.AppMemberDefinedData = options.AppMemberDefinedData
     }
-    ConnManager.apiCall(
-      SRV_NAME.GROUP,
-      'modify_group_member_info',
-      opt,
-      cbOk,
-      cbErr
-    )
+    ConnManager.apiCall(SRV_NAME.GROUP, 'modify_group_member_info', opt, cbOk, cbErr)
   }
   //删除群组成员
   //协议参考：https://www.qcloud.com/doc/product/269/1622
@@ -3682,13 +3529,7 @@ var webim = {
   //协议参考：https://www.qcloud.com/doc/product/269/1633
   var proto_changeGroupOwner = function(options, cbOk, cbErr) {
     if (!checkLogin(cbErr, true)) return
-    ConnManager.apiCall(
-      SRV_NAME.GROUP,
-      'change_group_owner',
-      options,
-      cbOk,
-      cbErr
-    )
+    ConnManager.apiCall(SRV_NAME.GROUP, 'change_group_owner', options, cbOk, cbErr)
   }
   //获取用户所加入的群组-高级接口
   //协议参考：https://www.qcloud.com/doc/product/269/1625
@@ -3749,13 +3590,7 @@ var webim = {
   //发送自定义群系统通知
   var proto_sendCustomGroupNotify = function(options, cbOk, cbErr) {
     if (!checkLogin(cbErr, true)) return
-    ConnManager.apiCall(
-      SRV_NAME.GROUP,
-      'send_group_system_notification',
-      options,
-      cbOk,
-      cbErr
-    )
+    ConnManager.apiCall(SRV_NAME.GROUP, 'send_group_system_notification', options, cbOk, cbErr)
   }
 
   //拉取群消息接口
@@ -3810,8 +3645,7 @@ var webim = {
         for (var j in resp.ResultItem) {
           if (resp.ResultItem[j].To_Account == failCount) {
             var resultCode = resp.ResultItem[j].ResultCode
-            resp.ResultItem[j].ResultInfo =
-              '[' + resultCode + ']' + resp.ResultItem[j].ResultInfo
+            resp.ResultItem[j].ResultInfo = '[' + resultCode + ']' + resp.ResultItem[j].ResultInfo
             resp.ErrorInfo += resp.ResultItem[j].ResultInfo + '\n'
             break
           }
@@ -4022,14 +3856,8 @@ var webim = {
             for (var j in resp.UserProfileItem) {
               if (resp.UserProfileItem[j].To_Account == failCount) {
                 var resultCode = resp.UserProfileItem[j].ResultCode
-                resp.UserProfileItem[j].ResultInfo =
-                  '[' + resultCode + ']' + resp.UserProfileItem[j].ResultInfo
-                resp.ErrorInfo +=
-                  '账号:' +
-                  failCount +
-                  ',' +
-                  resp.UserProfileItem[j].ResultInfo +
-                  '\n'
+                resp.UserProfileItem[j].ResultInfo = '[' + resultCode + ']' + resp.UserProfileItem[j].ResultInfo
+                resp.ErrorInfo += '账号:' + failCount + ',' + resp.UserProfileItem[j].ResultInfo + '\n'
                 break
               }
             }
@@ -4190,13 +4018,7 @@ var webim = {
   //接口质量上报
   var proto_reportApiQuality = function(options, cbOk, cbErr) {
     if (!checkLogin(cbErr, true)) return
-    ConnManager.apiCall(
-      SRV_NAME.IM_OPEN_STAT,
-      'web_report',
-      options,
-      cbOk,
-      cbErr
-    )
+    ConnManager.apiCall(SRV_NAME.IM_OPEN_STAT, 'web_report', options, cbOk, cbErr)
   }
 
   var proto_getLongPollingId = function(options, cbOk, cbErr) {
@@ -4234,22 +4056,12 @@ var webim = {
             onConnCallback = null
           }
           //请求后台服务接口
-          this.apiCall = function(
-            type,
-            cmd,
-            data,
-            cbOk,
-            cbErr,
-            timeout,
-            isLongPolling
-          ) {
+          this.apiCall = function(type, cmd, data, cbOk, cbErr, timeout, isLongPolling) {
             //封装后台服务接口地址
             var url = getApiUrl(type, cmd, cbOk, cbErr)
             if (url == false) return
             //发起ajax请求
-            var content_type = data.content_type
-              ? data.content_type
-              : 'application/json;charset=utf-8'
+            var content_type = data.content_type ? data.content_type : 'application/json;charset=utf-8'
             ajaxRequestJson(
               'POST',
               url,
@@ -4282,12 +4094,8 @@ var webim = {
                   //报错
                   if (cbErr) {
                     resp.SrcErrorInfo = resp.ErrorInfo
-                    resp.ErrorInfo =
-                      '[' + type + '][' + cmd + ']failed: ' + info
-                    if (
-                      cmd != 'longpolling' ||
-                      resp.ErrorCode != longPollingTimeOutErrorCode
-                    ) {
+                    resp.ErrorInfo = '[' + type + '][' + cmd + ']failed: ' + info
+                    if (cmd != 'longpolling' || resp.ErrorCode != longPollingTimeOutErrorCode) {
                       log.error(resp.ErrorInfo)
                     }
                     cbErr(resp)
@@ -4314,15 +4122,7 @@ var webim = {
             onConnCallback = null
           }
           //请求后台服务接口
-          this.apiCall = function(
-            type,
-            cmd,
-            data,
-            cbOk,
-            cbErr,
-            timeout,
-            isLongPolling
-          ) {
+          this.apiCall = function(type, cmd, data, cbOk, cbErr, timeout, isLongPolling) {
             //封装后台服务接口地址
             var url = getApiUrl(type, cmd, cbOk, cbErr)
             if (url == false) return
@@ -4335,14 +4135,7 @@ var webim = {
 
             window[cbval] = jsonpCallback
             script.type = 'text/javascript'
-            url =
-              url +
-              '&' +
-              cbkey +
-              '=' +
-              cbval +
-              '&jsonpbody=' +
-              encodeURIComponent(JSON.stringify(data))
+            url = url + '&' + cbkey + '=' + cbval + '&jsonpbody=' + encodeURIComponent(JSON.stringify(data))
             script.src = url
             script.async = true
 
@@ -4355,12 +4148,7 @@ var webim = {
             }
 
             script.onload = script.onreadystatechange = function() {
-              if (
-                (this.readyState &&
-                  this.readyState !== 'complete' &&
-                  this.readyState !== 'loaded') ||
-                loaded
-              ) {
+              if ((this.readyState && this.readyState !== 'complete' && this.readyState !== 'loaded') || loaded) {
                 return false
               }
               script.onload = script.onreadystatechange = null
@@ -4379,10 +4167,7 @@ var webim = {
                 cbOk && cbOk(resp)
               } else {
                 resp.ErrorInfo = '[' + type + '][' + cmd + ']failed ' + info
-                if (
-                  cmd != 'longpolling' ||
-                  resp.ErrorCode != longPollingTimeOutErrorCode
-                ) {
+                if (cmd != 'longpolling' || resp.ErrorCode != longPollingTimeOutErrorCode) {
                   log.error(resp.ErrorInfo)
                 } else {
                   log.warn('[' + type + '][' + cmd + ']success: ' + info)
@@ -4492,25 +4277,14 @@ var webim = {
     }
     var numstr = res.reverse().join('')
     var long = {
-      high:
-        '0x' + parseInt(numstr.substr(0, numstr.length - 32), 2).toString(16),
-      low:
-        '0x' + parseInt(numstr.substr(numstr.length - 32 - 1), 2).toString(16)
+      high: '0x' + parseInt(numstr.substr(0, numstr.length - 32), 2).toString(16),
+      low: '0x' + parseInt(numstr.substr(numstr.length - 32 - 1), 2).toString(16)
     }
     var longVal = new Long(long.low, long.high, true)
     return longVal.toString()
   }
   // class Msg
-  var Msg = function(
-    sess,
-    isSend,
-    seq,
-    random,
-    time,
-    fromAccount,
-    subType,
-    fromAccountNick
-  ) {
+  var Msg = function(sess, isSend, seq, random, time, fromAccount, subType, fromAccountNick) {
     this.sess = sess
     this.subType = subType >= 0 ? subType : 0 //消息类型,c2c消息时，type取值为0；group消息时，type取值0和1，0-普通群消息，1-群提示消息
     this.fromAccount = fromAccount
@@ -4669,9 +4443,7 @@ var webim = {
     return this.desc
   }
   Msg.Elem.Location.prototype.toHtml = function() {
-    return (
-      '经度=' + this.longitude + ',纬度=' + this.latitude + ',描述=' + this.desc
-    )
+    return '经度=' + this.longitude + ',纬度=' + this.latitude + ',描述=' + this.desc
   }
 
   //图片消息
@@ -4756,15 +4528,7 @@ var webim = {
   }
 
   // class Msg.Elem.Sound
-  Msg.Elem.Sound = function(
-    uuid,
-    second,
-    size,
-    senderId,
-    receiverId,
-    downFlag,
-    chatType
-  ) {
+  Msg.Elem.Sound = function(uuid, second, size, senderId, receiverId, downFlag, chatType) {
     this.uuid = uuid //文件id
     this.second = second //时长，单位：秒
     this.size = size //大小，单位：字节
@@ -4776,15 +4540,7 @@ var webim = {
     //根据不同情况拉取数据
     //是否需要申请下载地址  0:到架平申请  1:到cos申请  2:不需要申请, 直接拿url下载
     if (downFlag !== undefined && busiId !== undefined) {
-      getFileDownUrlV2(
-        uuid,
-        senderId,
-        second,
-        downFlag,
-        receiverId,
-        this.busiId,
-        UPLOAD_RES_TYPE.SOUND
-      )
+      getFileDownUrlV2(uuid, senderId, second, downFlag, receiverId, this.busiId, UPLOAD_RES_TYPE.SOUND)
     } else {
       this.downUrl = getSoundDownUrl(uuid, senderId, second) //下载地址
     }
@@ -4806,10 +4562,7 @@ var webim = {
   }
   Msg.Elem.Sound.prototype.toHtml = function() {
     if (BROWSER_INFO.type == 'ie' && parseInt(BROWSER_INFO.ver) <= 8) {
-      return (
-        '[这是一条语音消息]demo暂不支持ie8(含)以下浏览器播放语音,语音URL:' +
-        this.downUrl
-      )
+      return '[这是一条语音消息]demo暂不支持ie8(含)以下浏览器播放语音,语音URL:' + this.downUrl
     }
     return (
       '<audio id="uuid_' +
@@ -4821,15 +4574,7 @@ var webim = {
   }
 
   // class Msg.Elem.File
-  Msg.Elem.File = function(
-    uuid,
-    name,
-    size,
-    senderId,
-    receiverId,
-    downFlag,
-    chatType
-  ) {
+  Msg.Elem.File = function(uuid, name, size, senderId, receiverId, downFlag, chatType) {
     this.uuid = uuid //文件id
     this.name = name //文件名
     this.size = size //大小，单位：字节
@@ -4841,15 +4586,7 @@ var webim = {
     //根据不同情况拉取数据
     //是否需要申请下载地址  0:到架平申请  1:到cos申请  2:不需要申请, 直接拿url下载
     if (downFlag !== undefined && busiId !== undefined) {
-      getFileDownUrlV2(
-        uuid,
-        senderId,
-        name,
-        downFlag,
-        receiverId,
-        this.busiId,
-        UPLOAD_RES_TYPE.FILE
-      )
+      getFileDownUrlV2(uuid, senderId, name, downFlag, receiverId, this.busiId, UPLOAD_RES_TYPE.FILE)
     } else {
       this.downUrl = getFileDownUrl(uuid, senderId, name) //下载地址
     }
@@ -4893,14 +4630,7 @@ var webim = {
   }
 
   // class Msg.Elem.GroupTip 群提示消息对象
-  Msg.Elem.GroupTip = function(
-    opType,
-    opUserId,
-    groupId,
-    groupName,
-    userIdList,
-    userinfo
-  ) {
+  Msg.Elem.GroupTip = function(opType, opUserId, groupId, groupName, userIdList, userinfo) {
     this.opType = opType //操作类型
     this.opUserId = opUserId //操作者id
     this.groupId = groupId //群id
@@ -4955,10 +4685,7 @@ var webim = {
         text += this.opUserId + '邀请了'
         for (var m in this.userIdList) {
           text += this.userIdList[m] + ','
-          if (
-            this.userIdList.length > GROUP_TIP_MAX_USER_COUNT &&
-            m == maxIndex
-          ) {
+          if (this.userIdList.length > GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
             text += '等' + this.userIdList.length + '人'
             break
           }
@@ -4972,10 +4699,7 @@ var webim = {
         text += this.opUserId + '将'
         for (var m in this.userIdList) {
           text += this.userIdList[m] + ','
-          if (
-            this.userIdList.length > GROUP_TIP_MAX_USER_COUNT &&
-            m == maxIndex
-          ) {
+          if (this.userIdList.length > GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
             text += '等' + this.userIdList.length + '人'
             break
           }
@@ -4986,10 +4710,7 @@ var webim = {
         text += this.opUserId + '将'
         for (var m in this.userIdList) {
           text += this.userIdList[m] + ','
-          if (
-            this.userIdList.length > GROUP_TIP_MAX_USER_COUNT &&
-            m == maxIndex
-          ) {
+          if (this.userIdList.length > GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
             text += '等' + this.userIdList.length + '人'
             break
           }
@@ -5000,10 +4721,7 @@ var webim = {
         text += this.opUserId + '取消'
         for (var m in this.userIdList) {
           text += this.userIdList[m] + ','
-          if (
-            this.userIdList.length > GROUP_TIP_MAX_USER_COUNT &&
-            m == maxIndex
-          ) {
+          if (this.userIdList.length > GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
             text += '等' + this.userIdList.length + '人'
             break
           }
@@ -5054,10 +4772,7 @@ var webim = {
           } else {
             text += ' shutupTime为空'
           }
-          if (
-            this.memberInfoList.length > GROUP_TIP_MAX_USER_COUNT &&
-            m == maxIndex
-          ) {
+          if (this.memberInfoList.length > GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
             text += '等' + this.memberInfoList.length + '人'
             break
           }
@@ -5194,9 +4909,7 @@ var webim = {
           if (selSess._impl.type == SESSION_TYPE.C2C) {
             //私聊消息已读上报
             var tmpC2CMsgReadedItem = []
-            tmpC2CMsgReadedItem.push(
-              new C2CMsgReadedItem(selSess._impl.id, selSess._impl.time)
-            )
+            tmpC2CMsgReadedItem.push(new C2CMsgReadedItem(selSess._impl.id, selSess._impl.time))
             //调用C2C消息已读上报接口
             proto_c2CMsgReaded(
               MsgStore.cookie,
@@ -5231,9 +4944,7 @@ var webim = {
 
     this.c2CMsgReaded = function(opts, cbOk, cbErr) {
       var tmpC2CMsgReadedItem = []
-      tmpC2CMsgReadedItem.push(
-        new C2CMsgReadedItem(opts.To_Account, opts.LastedMsgTime)
-      )
+      tmpC2CMsgReadedItem.push(new C2CMsgReadedItem(opts.To_Account, opts.LastedMsgTime))
       //调用C2C消息已读上报接口
       proto_c2CMsgReaded(
         MsgStore.cookie,
@@ -5390,8 +5101,7 @@ var webim = {
     this.setBigGroupLongPollingMsgMap = function(groupId, count) {
       var bigGroupLongPollingMsgCount = bigGroupLongPollingMsgMap[groupId]
       if (bigGroupLongPollingMsgCount) {
-        bigGroupLongPollingMsgCount =
-          parseInt(bigGroupLongPollingMsgCount) + count
+        bigGroupLongPollingMsgCount = parseInt(bigGroupLongPollingMsgCount) + count
         bigGroupLongPollingMsgMap[groupId] = bigGroupLongPollingMsgCount
       } else {
         bigGroupLongPollingMsgMap[groupId] = count
@@ -5507,12 +5217,7 @@ var webim = {
         ReqMsgNumber: reqMsgNumber
       }
       //发起一个拉群群消息请求
-      log.warn(
-        '第' +
-          getLostGroupMsgCount +
-          '次补齐群消息,参数=' +
-          JSON.stringify(tempOpts)
-      )
+      log.warn('第' + getLostGroupMsgCount + '次补齐群消息,参数=' + JSON.stringify(tempOpts))
       MsgManager.syncGroupMsgs(tempOpts)
     }
 
@@ -5569,12 +5274,7 @@ var webim = {
         }
         //更新长轮询的群NoticeSeq
         if (groupMsgArray[j].NoticeSeq > noticeSeq) {
-          log.warn(
-            'noticeSeq=' +
-              noticeSeq +
-              ',msgNoticeSeq=' +
-              groupMsgArray[j].NoticeSeq
-          )
+          log.warn('noticeSeq=' + noticeSeq + ',msgNoticeSeq=' + groupMsgArray[j].NoticeSeq)
           noticeSeq = groupMsgArray[j].NoticeSeq
         }
         groupMsgArray[j].Event = eventType
@@ -5597,10 +5297,7 @@ var webim = {
           //高并发情况下，长轮询可能存在丢消息，这时需要客户端通过拉取群消息接口补齐下
           //1、如果收到的新消息最小seq比当前最大群消息seq大于1，则表示收到的群消息发生跳跃，需要补齐
           //2、收到的新群消息seq存在不连续情况，也需要补齐
-          if (
-            groupMsgMap[groupId].min - curMaxMsgSeq > 1 ||
-            groupMsgMap[groupId].msgs.length < tempCount
-          ) {
+          if (groupMsgMap[groupId].min - curMaxMsgSeq > 1 || groupMsgMap[groupId].msgs.length < tempCount) {
             //发起一个拉群群消息请求
             log.warn(
               '发起一次补齐群消息请求,curMaxMsgSeq=' +
@@ -5614,18 +5311,11 @@ var webim = {
                 ', tempCount=' +
                 tempCount
             )
-            getLostGroupMsgs(
-              groupId,
-              groupMsgMap[groupId].max,
-              groupMsgMap[groupId].max - curMaxMsgSeq
-            )
+            getLostGroupMsgs(groupId, groupMsgMap[groupId].max, groupMsgMap[groupId].max - curMaxMsgSeq)
             //更新myGroupMaxSeqs中的群最大seq
             updateMyGroupCurMaxSeq(groupId, groupMsgMap[groupId].max)
           } else {
-            new_group_msgs = addGroupMsgList(
-              groupMsgMap[groupId].msgs,
-              new_group_msgs
-            )
+            new_group_msgs = addGroupMsgList(groupMsgMap[groupId].msgs, new_group_msgs)
           }
         } else {
           //不存在该群的最大消息seq
@@ -5648,10 +5338,7 @@ var webim = {
             //更新myGroupMaxSeqs中的群最大seq
             updateMyGroupCurMaxSeq(groupId, groupMsgMap[groupId].max)
           } else {
-            new_group_msgs = addGroupMsgList(
-              groupMsgMap[groupId].msgs,
-              new_group_msgs
-            )
+            new_group_msgs = addGroupMsgList(groupMsgMap[groupId].msgs, new_group_msgs)
           }
         }
       }
@@ -5678,12 +5365,7 @@ var webim = {
         }
         //更新长轮询的群NoticeSeq
         if (groupMsgArray[j].NoticeSeq > noticeSeq) {
-          log.warn(
-            'noticeSeq=' +
-              noticeSeq +
-              ',msgNoticeSeq=' +
-              groupMsgArray[j].NoticeSeq
-          )
+          log.warn('noticeSeq=' + noticeSeq + ',msgNoticeSeq=' + groupMsgArray[j].NoticeSeq)
           noticeSeq = groupMsgArray[j].NoticeSeq
         }
         groupMsgArray[j].Event = eventType
@@ -5706,10 +5388,7 @@ var webim = {
           //高并发情况下，长轮询可能存在丢消息，这时需要客户端通过拉取群消息接口补齐下
           //1、如果收到的新消息最小seq比当前最大群消息seq大于1，则表示收到的群消息发生跳跃，需要补齐
           //2、收到的新群消息seq存在不连续情况，也需要补齐
-          if (
-            groupMsgMap[groupId].min - curMaxMsgSeq > 1 ||
-            groupMsgMap[groupId].msgs.length < tempCount
-          ) {
+          if (groupMsgMap[groupId].min - curMaxMsgSeq > 1 || groupMsgMap[groupId].msgs.length < tempCount) {
             //发起一个拉群群消息请求
             log.warn(
               '发起一次补齐群消息请求,curMaxMsgSeq=' +
@@ -5723,18 +5402,11 @@ var webim = {
                 ', tempCount=' +
                 tempCount
             )
-            getLostGroupMsgs(
-              groupId,
-              groupMsgMap[groupId].max,
-              groupMsgMap[groupId].max - curMaxMsgSeq
-            )
+            getLostGroupMsgs(groupId, groupMsgMap[groupId].max, groupMsgMap[groupId].max - curMaxMsgSeq)
             //更新myGroupMaxSeqs中的群最大seq
             updateMyGroupCurMaxSeq(groupId, groupMsgMap[groupId].max)
           } else {
-            new_group_msgs = addGroupMsgList(
-              groupMsgMap[groupId].msgs,
-              new_group_msgs
-            )
+            new_group_msgs = addGroupMsgList(groupMsgMap[groupId].msgs, new_group_msgs)
           }
         } else {
           //不存在该群的最大消息seq
@@ -5757,10 +5429,7 @@ var webim = {
             //更新myGroupMaxSeqs中的群最大seq
             updateMyGroupCurMaxSeq(groupId, groupMsgMap[groupId].max)
           } else {
-            new_group_msgs = addGroupMsgList(
-              groupMsgMap[groupId].msgs,
-              new_group_msgs
-            )
+            new_group_msgs = addGroupMsgList(groupMsgMap[groupId].msgs, new_group_msgs)
           }
         }
       }
@@ -5794,20 +5463,13 @@ var webim = {
 
     //处理新的群系统消息
     //isNeedValidRepeatMsg 是否需要判重
-    var handlerGroupSystemMsgs = function(
-      groupSystemMsgs,
-      isNeedValidRepeatMsg
-    ) {
+    var handlerGroupSystemMsgs = function(groupSystemMsgs, isNeedValidRepeatMsg) {
       for (var k in groupSystemMsgs) {
         var groupTip = groupSystemMsgs[k]
         var groupReportTypeMsg = groupTip.MsgBody
         var reportType = groupReportTypeMsg.ReportType
         //当长轮询返回的群系统消息，才需要更新群消息通知seq
-        if (
-          isNeedValidRepeatMsg == false &&
-          groupTip.NoticeSeq &&
-          groupTip.NoticeSeq > noticeSeq
-        ) {
+        if (isNeedValidRepeatMsg == false && groupTip.NoticeSeq && groupTip.NoticeSeq > noticeSeq) {
           noticeSeq = groupTip.NoticeSeq
         }
         var toAccount = groupTip.GroupInfo.To_Account
@@ -5818,12 +5480,7 @@ var webim = {
                  }*/
         if (isNeedValidRepeatMsg) {
           //var key=groupTip.ToGroupId+"_"+reportType+"_"+groupTip.MsgTimeStamp+"_"+groupReportTypeMsg.Operator_Account;
-          var key =
-            groupTip.ToGroupId +
-            '_' +
-            reportType +
-            '_' +
-            groupReportTypeMsg.Operator_Account
+          var key = groupTip.ToGroupId + '_' + reportType + '_' + groupReportTypeMsg.Operator_Account
           var isExist = groupSystemMsgsCache[key]
           if (isExist) {
             log.warn('收到重复的群系统消息：key=' + key)
@@ -5905,20 +5562,13 @@ var webim = {
 
     //处理新的好友系统通知
     //isNeedValidRepeatMsg 是否需要判重
-    var handlerFriendSystemNotices = function(
-      friendSystemNotices,
-      isNeedValidRepeatMsg
-    ) {
+    var handlerFriendSystemNotices = function(friendSystemNotices, isNeedValidRepeatMsg) {
       var friendNotice, type, notify
       for (var k in friendSystemNotices) {
         friendNotice = friendSystemNotices[k]
         type = friendNotice.PushType
         //当长轮询返回的群系统消息，才需要更新通知seq
-        if (
-          isNeedValidRepeatMsg == false &&
-          friendNotice.NoticeSeq &&
-          friendNotice.NoticeSeq > noticeSeq
-        ) {
+        if (isNeedValidRepeatMsg == false && friendNotice.NoticeSeq && friendNotice.NoticeSeq > noticeSeq) {
           noticeSeq = friendNotice.NoticeSeq
         }
         notify = {
@@ -5951,43 +5601,31 @@ var webim = {
                      break;
                      */
           default:
-            log.error(
-              '未知好友系统通知类型：friendNotice=' +
-                JSON.stringify(friendNotice)
-            )
+            log.error('未知好友系统通知类型：friendNotice=' + JSON.stringify(friendNotice))
             break
         }
 
         if (isNeedValidRepeatMsg) {
           if (type == FRIEND_NOTICE_TYPE.PENDENCY_ADD) {
             //回调
-            if (onFriendSystemNotifyCallbacks[type])
-              onFriendSystemNotifyCallbacks[type](notify)
+            if (onFriendSystemNotifyCallbacks[type]) onFriendSystemNotifyCallbacks[type](notify)
           }
         } else {
           //回调
-          if (onFriendSystemNotifyCallbacks[type])
-            onFriendSystemNotifyCallbacks[type](notify)
+          if (onFriendSystemNotifyCallbacks[type]) onFriendSystemNotifyCallbacks[type](notify)
         }
       } //loop
     }
 
     //处理新的资料系统通知
     //isNeedValidRepeatMsg 是否需要判重
-    var handlerProfileSystemNotices = function(
-      profileSystemNotices,
-      isNeedValidRepeatMsg
-    ) {
+    var handlerProfileSystemNotices = function(profileSystemNotices, isNeedValidRepeatMsg) {
       var profileNotice, type, notify
       for (var k in profileSystemNotices) {
         profileNotice = profileSystemNotices[k]
         type = profileNotice.PushType
         //当长轮询返回的群系统消息，才需要更新通知seq
-        if (
-          isNeedValidRepeatMsg == false &&
-          profileNotice.NoticeSeq &&
-          profileNotice.NoticeSeq > noticeSeq
-        ) {
+        if (isNeedValidRepeatMsg == false && profileNotice.NoticeSeq && profileNotice.NoticeSeq > noticeSeq) {
           noticeSeq = profileNotice.NoticeSeq
         }
         notify = {
@@ -5999,23 +5637,18 @@ var webim = {
             notify['ProfileList'] = profileNotice.ProfileList
             break
           default:
-            log.error(
-              '未知资料系统通知类型：profileNotice=' +
-                JSON.stringify(profileNotice)
-            )
+            log.error('未知资料系统通知类型：profileNotice=' + JSON.stringify(profileNotice))
             break
         }
 
         if (isNeedValidRepeatMsg) {
           if (type == PROFILE_NOTICE_TYPE.PROFILE_MODIFY) {
             //回调
-            if (onProfileSystemNotifyCallbacks[type])
-              onProfileSystemNotifyCallbacks[type](notify)
+            if (onProfileSystemNotifyCallbacks[type]) onProfileSystemNotifyCallbacks[type](notify)
           }
         } else {
           //回调
-          if (onProfileSystemNotifyCallbacks[type])
-            onProfileSystemNotifyCallbacks[type](notify)
+          if (onProfileSystemNotifyCallbacks[type]) onProfileSystemNotifyCallbacks[type](notify)
         }
       } //loop
     }
@@ -6071,8 +5704,7 @@ var webim = {
           break
       }
       //回调
-      if (onGroupSystemNotifyCallbacks[reportType])
-        onGroupSystemNotifyCallbacks[reportType](notify)
+      if (onGroupSystemNotifyCallbacks[reportType]) onGroupSystemNotifyCallbacks[reportType](notify)
     }
 
     //处理C2C EVENT 消息通道Array
@@ -6099,15 +5731,8 @@ var webim = {
       }
       // stopPolling = true;
       //回调onMsgReadCallback
-      if (
-        notify.ReadC2cMsgNotify.UinPairReadArray &&
-        onC2cEventCallbacks[subType]
-      ) {
-        for (
-          var i = 0, l = notify.ReadC2cMsgNotify.UinPairReadArray.length;
-          i < l;
-          i++
-        ) {
+      if (notify.ReadC2cMsgNotify.UinPairReadArray && onC2cEventCallbacks[subType]) {
+        for (var i = 0, l = notify.ReadC2cMsgNotify.UinPairReadArray.length; i < l; i++) {
           var item = notify.ReadC2cMsgNotify.UinPairReadArray[i]
           onC2cEventCallbacks[subType](item)
         }
@@ -6130,8 +5755,7 @@ var webim = {
         proto_getLongPollingId({}, function(resp) {
           LongPollingId = opts.Cookie.LongPollingId = resp.LongPollingId
           //根据回包设置超时时间，超时时长不能>60秒，因为webkit手机端的最长超时时间不能大于60s
-          longPollingDefaultTimeOut =
-            resp.Timeout > 60 ? longPollingDefaultTimeOut : resp.Timeout * 1000
+          longPollingDefaultTimeOut = resp.Timeout > 60 ? longPollingDefaultTimeOut : resp.Timeout * 1000
           doPolling()
         })
       }
@@ -6180,10 +5804,7 @@ var webim = {
                 case LONG_POLLINNG_EVENT_TYPE.C2C_COMMON: //c2c消息通知
                   noticeSeq = e.C2cMsgArray[0].NoticeSeq
                   //更新C2C消息通知seq
-                  log.warn(
-                    'longpolling: received new c2c_common msg',
-                    noticeSeq
-                  )
+                  log.warn('longpolling: received new c2c_common msg', noticeSeq)
                   handlerOrdinaryAndTipC2cMsgs(e.Event, e.C2cMsgArray)
                   break
                 case LONG_POLLINNG_EVENT_TYPE.C2C_EVENT: //c2c已读消息通知
@@ -6267,12 +5888,7 @@ var webim = {
               msgInfo = tool.replaceObject(keyMap, msgInfo)
               //如果是已经删除的消息或者发送者帐号为空或者消息内容为空
               //IsPlaceMsg=1
-              if (
-                msgInfo.IsPlaceMsg ||
-                !msgInfo.From_Account ||
-                !msgInfo.MsgBody ||
-                msgInfo.MsgBody.length == 0
-              ) {
+              if (msgInfo.IsPlaceMsg || !msgInfo.From_Account || !msgInfo.MsgBody || msgInfo.MsgBody.length == 0) {
                 continue
               }
 
@@ -6296,21 +5912,13 @@ var webim = {
                   handlerGroupSystemMsg(msgInfo)
                   break
                 default:
-                  log.error(
-                    'bigGroupLongPolling收到未知新消息类型: Event=' + event
-                  )
+                  log.error('bigGroupLongPolling收到未知新消息类型: Event=' + event)
                   break
               }
             } // for loop
             if (msgCount > 0) {
-              MsgManager.setBigGroupLongPollingMsgMap(
-                msgInfo.ToGroupId,
-                msgCount
-              ) //
-              log.warn(
-                'current bigGroupLongPollingMsgMap: ' +
-                  JSON.stringify(bigGroupLongPollingMsgMap)
-              )
+              MsgManager.setBigGroupLongPollingMsgMap(msgInfo.ToGroupId, msgCount) //
+              log.warn('current bigGroupLongPollingMsgMap: ' + JSON.stringify(bigGroupLongPollingMsgMap))
             }
           }
           curBigGroupLongPollingRetErrorCount = 0
@@ -6343,10 +5951,7 @@ var webim = {
             }
           }
           //累计超过一定次数，不再发起长轮询请求
-          if (
-            curBigGroupLongPollingRetErrorCount <
-            LONG_POLLING_MAX_RET_ERROR_COUNT
-          ) {
+          if (curBigGroupLongPollingRetErrorCount < LONG_POLLING_MAX_RET_ERROR_COUNT) {
             bigGroupLongPollingOn && MsgManager.bigGroupLongPolling()
           } else {
             var errInfo = {
@@ -6364,10 +5969,7 @@ var webim = {
 
     //更新连接状态
     var updatecLongPollingStatus = function(errObj) {
-      if (
-        errObj.ErrorCode == 0 ||
-        errObj.ErrorCode == longPollingTimeOutErrorCode
-      ) {
+      if (errObj.ErrorCode == 0 || errObj.ErrorCode == longPollingTimeOutErrorCode) {
         curLongPollingRetErrorCount = 0
         longPollingOffCallbackFlag = false
         var errorInfo
@@ -6407,12 +6009,7 @@ var webim = {
       } else {
         //记录长轮询返回解析json错误次数
         curLongPollingRetErrorCount++
-        log.warn(
-          'longPolling接口第' +
-            curLongPollingRetErrorCount +
-            '次报错: ' +
-            errObj.ErrorInfo
-        )
+        log.warn('longPolling接口第' + curLongPollingRetErrorCount + '次报错: ' + errObj.ErrorInfo)
         //累计超过一定次数
         if (curLongPollingRetErrorCount <= LONG_POLLING_MAX_RET_ERROR_COUNT) {
           setTimeout(startNextLongPolling, 100) //
@@ -6425,9 +6022,7 @@ var webim = {
           }
           longPollingOffCallbackFlag == false && ConnManager.callBack(errInfo)
           longPollingOffCallbackFlag = true
-          log.warn(
-            longPollingIntervalTime + '毫秒之后,SDK会发起新的longPolling请求...'
-          )
+          log.warn(longPollingIntervalTime + '毫秒之后,SDK会发起新的longPolling请求...')
           setTimeout(startNextLongPolling, longPollingIntervalTime) //长轮询接口报错次数达到一定值，每间隔5s发起新的长轮询
         }
       }
@@ -6478,26 +6073,14 @@ var webim = {
               msgContent = new Msg.Elem.Text(msgBody.MsgContent.Text)
               break
             case MSG_ELEMENT_TYPE.FACE:
-              msgContent = new Msg.Elem.Face(
-                msgBody.MsgContent.Index,
-                msgBody.MsgContent.Data
-              )
+              msgContent = new Msg.Elem.Face(msgBody.MsgContent.Index, msgBody.MsgContent.Data)
               break
             case MSG_ELEMENT_TYPE.IMAGE:
-              msgContent = new Msg.Elem.Images(
-                msgBody.MsgContent.UUID,
-                msgBody.MsgContent.ImageFormat || ''
-              )
+              msgContent = new Msg.Elem.Images(msgBody.MsgContent.UUID, msgBody.MsgContent.ImageFormat || '')
               for (var j in msgBody.MsgContent.ImageInfoArray) {
                 var tempImg = msgBody.MsgContent.ImageInfoArray[j]
                 msgContent.addImage(
-                  new Msg.Elem.Images.Image(
-                    tempImg.Type,
-                    tempImg.Size,
-                    tempImg.Width,
-                    tempImg.Height,
-                    tempImg.URL
-                  )
+                  new Msg.Elem.Images.Image(tempImg.Type, tempImg.Size, tempImg.Width, tempImg.Height, tempImg.URL)
                 )
               }
               break
@@ -6545,28 +6128,18 @@ var webim = {
             case MSG_ELEMENT_TYPE.CUSTOM:
               try {
                 var data = JSON.parse(msgBody.MsgContent.Data)
-                if (
-                  data &&
-                  data.userAction &&
-                  data.userAction == FRIEND_WRITE_MSG_ACTION.ING
-                ) {
+                if (data && data.userAction && data.userAction == FRIEND_WRITE_MSG_ACTION.ING) {
                   //过滤安卓或ios的正在输入自定义消息
                   continue
                 }
               } catch (e) {}
 
               msgType = MSG_ELEMENT_TYPE.CUSTOM
-              msgContent = new Msg.Elem.Custom(
-                msgBody.MsgContent.Data,
-                msgBody.MsgContent.Desc,
-                msgBody.MsgContent.Ext
-              )
+              msgContent = new Msg.Elem.Custom(msgBody.MsgContent.Data, msgBody.MsgContent.Desc, msgBody.MsgContent.Ext)
               break
             default:
               msgType = MSG_ELEMENT_TYPE.TEXT
-              msgContent = new Msg.Elem.Text(
-                'web端暂不支持' + msgBody.MsgType + '消息'
-              )
+              msgContent = new Msg.Elem.Text('web端暂不支持' + msgBody.MsgType + '消息')
               break
           }
           msg.elems.push(new Msg.Elem(msgType, msgContent))
@@ -6594,9 +6167,7 @@ var webim = {
         handlerGroupSystemMsgs(e.GroupTips, true)
         switch (e.Event) {
           case LONG_POLLINNG_EVENT_TYPE.GROUP_SYSTEM: //（多终端同步）群系统消息
-            log.warn(
-              'handlerApplyJoinGroupSystemMsgs： handler new group system msg'
-            )
+            log.warn('handlerApplyJoinGroupSystemMsgs： handler new group system msg')
             //true 表示 解决加群申请通知存在重复的问题（已处理的通知，下次登录还会拉到），需要判重
             handlerGroupSystemMsgs(e.GroupTips, true)
             break
@@ -6661,26 +6232,14 @@ var webim = {
                   msgContent = new Msg.Elem.Text(msgBody.MsgContent.Text)
                   break
                 case MSG_ELEMENT_TYPE.FACE:
-                  msgContent = new Msg.Elem.Face(
-                    msgBody.MsgContent.Index,
-                    msgBody.MsgContent.Data
-                  )
+                  msgContent = new Msg.Elem.Face(msgBody.MsgContent.Index, msgBody.MsgContent.Data)
                   break
                 case MSG_ELEMENT_TYPE.IMAGE:
-                  msgContent = new Msg.Elem.Images(
-                    msgBody.MsgContent.UUID,
-                    msgBody.MsgContent.ImageFormat
-                  )
+                  msgContent = new Msg.Elem.Images(msgBody.MsgContent.UUID, msgBody.MsgContent.ImageFormat)
                   for (var j in msgBody.MsgContent.ImageInfoArray) {
                     var tempImg = msgBody.MsgContent.ImageInfoArray[j]
                     msgContent.addImage(
-                      new Msg.Elem.Images.Image(
-                        tempImg.Type,
-                        tempImg.Size,
-                        tempImg.Width,
-                        tempImg.Height,
-                        tempImg.URL
-                      )
+                      new Msg.Elem.Images.Image(tempImg.Type, tempImg.Size, tempImg.Width, tempImg.Height, tempImg.URL)
                     )
                   }
                   break
@@ -6730,11 +6289,7 @@ var webim = {
                 case MSG_ELEMENT_TYPE.CUSTOM:
                   try {
                     var data = JSON.parse(msgBody.MsgContent.Data)
-                    if (
-                      data &&
-                      data.userAction &&
-                      data.userAction == FRIEND_WRITE_MSG_ACTION.ING
-                    ) {
+                    if (data && data.userAction && data.userAction == FRIEND_WRITE_MSG_ACTION.ING) {
                       //过滤安卓或ios的正在输入自定义消息
                       continue
                     }
@@ -6749,9 +6304,7 @@ var webim = {
                   break
                 default:
                   msgType = MSG_ELEMENT_TYPE.TEXT
-                  msgContent = new Msg.Elem.Text(
-                    'web端暂不支持' + msgBody.MsgType + '消息'
-                  )
+                  msgContent = new Msg.Elem.Text('web端暂不支持' + msgBody.MsgType + '消息')
                   break
               }
               msg.elems.push(new Msg.Elem(msgType, msgContent))
@@ -6819,19 +6372,9 @@ var webim = {
           var msgInfos = []
           //处理c2c消息
           msgInfos = resp.MsgList //返回的消息列表
-          var sess = MsgStore.sessByTypeId(
-            SESSION_TYPE.C2C,
-            options.Peer_Account
-          )
+          var sess = MsgStore.sessByTypeId(SESSION_TYPE.C2C, options.Peer_Account)
           if (!sess) {
-            sess = new Session(
-              SESSION_TYPE.C2C,
-              options.Peer_Account,
-              options.Peer_Account,
-              '',
-              0,
-              0
-            )
+            sess = new Session(SESSION_TYPE.C2C, options.Peer_Account, options.Peer_Account, '', 0, 0)
           }
           for (var i in msgInfos) {
             var msgInfo = msgInfos[i]
@@ -6866,26 +6409,14 @@ var webim = {
                   msgContent = new Msg.Elem.Text(msgBody.MsgContent.Text)
                   break
                 case MSG_ELEMENT_TYPE.FACE:
-                  msgContent = new Msg.Elem.Face(
-                    msgBody.MsgContent.Index,
-                    msgBody.MsgContent.Data
-                  )
+                  msgContent = new Msg.Elem.Face(msgBody.MsgContent.Index, msgBody.MsgContent.Data)
                   break
                 case MSG_ELEMENT_TYPE.IMAGE:
-                  msgContent = new Msg.Elem.Images(
-                    msgBody.MsgContent.UUID,
-                    msgBody.MsgContent.ImageFormat
-                  )
+                  msgContent = new Msg.Elem.Images(msgBody.MsgContent.UUID, msgBody.MsgContent.ImageFormat)
                   for (var j in msgBody.MsgContent.ImageInfoArray) {
                     var tempImg = msgBody.MsgContent.ImageInfoArray[j]
                     msgContent.addImage(
-                      new Msg.Elem.Images.Image(
-                        tempImg.Type,
-                        tempImg.Size,
-                        tempImg.Width,
-                        tempImg.Height,
-                        tempImg.URL
-                      )
+                      new Msg.Elem.Images.Image(tempImg.Type, tempImg.Size, tempImg.Width, tempImg.Height, tempImg.URL)
                     )
                   }
                   break
@@ -6945,9 +6476,7 @@ var webim = {
                   break
                 default:
                   msgType = MSG_ELEMENT_TYPE.TEXT
-                  msgContent = new Msg.Elem.Text(
-                    'web端暂不支持' + msgBody.MsgType + '消息'
-                  )
+                  msgContent = new Msg.Elem.Text('web端暂不支持' + msgBody.MsgType + '消息')
                   break
               }
               msg.elems.push(new Msg.Elem(msgType, msgContent))
@@ -7011,12 +6540,7 @@ var webim = {
             var msgInfo = msgInfos[i]
             //如果是已经删除的消息或者发送者帐号为空或者消息内容为空
             //IsPlaceMsg=1
-            if (
-              msgInfo.IsPlaceMsg ||
-              !msgInfo.From_Account ||
-              !msgInfo.MsgBody ||
-              msgInfo.MsgBody.length == 0
-            ) {
+            if (msgInfo.IsPlaceMsg || !msgInfo.From_Account || !msgInfo.MsgBody || msgInfo.MsgBody.length == 0) {
               continue
             }
             var msg = handlerGroupMsg(msgInfo, true, true, isFinished)
@@ -7040,18 +6564,8 @@ var webim = {
     //处理群消息(普通消息+提示消息)
     //isSyncGroupMsgs 是否主动拉取群消息标志
     //isAddMsgFlag 是否需要保存到MsgStore，如果需要，这里会存在判重逻辑
-    var handlerGroupMsg = function(
-      msgInfo,
-      isSyncGroupMsgs,
-      isAddMsgFlag,
-      isFinished
-    ) {
-      if (
-        msgInfo.IsPlaceMsg ||
-        !msgInfo.From_Account ||
-        !msgInfo.MsgBody ||
-        msgInfo.MsgBody.length == 0
-      ) {
+    var handlerGroupMsg = function(msgInfo, isSyncGroupMsgs, isAddMsgFlag, isFinished) {
+      if (msgInfo.IsPlaceMsg || !msgInfo.From_Account || !msgInfo.MsgBody || msgInfo.MsgBody.length == 0) {
         return null
       }
       var isSendMsg, id, headUrl, fromAccountNick, fromAccountHeadurl
@@ -7089,24 +6603,14 @@ var webim = {
       }
       var sess = MsgStore.sessByTypeId(SESSION_TYPE.GROUP, group_id)
       if (!sess) {
-        sess = new Session(
-          SESSION_TYPE.GROUP,
-          group_id,
-          group_name,
-          headUrl,
-          0,
-          0
-        )
+        sess = new Session(SESSION_TYPE.GROUP, group_id, group_name, headUrl, 0, 0)
       }
       if (typeof isFinished !== 'undefined') {
         sess.isFinished(isFinished || 0)
       }
       var subType = GROUP_MSG_SUB_TYPE.COMMON //消息类型
       //群提示消息,重新封装下
-      if (
-        LONG_POLLINNG_EVENT_TYPE.GROUP_TIP == msgInfo.Event ||
-        LONG_POLLINNG_EVENT_TYPE.GROUP_TIP2 == msgInfo.Event
-      ) {
+      if (LONG_POLLINNG_EVENT_TYPE.GROUP_TIP == msgInfo.Event || LONG_POLLINNG_EVENT_TYPE.GROUP_TIP2 == msgInfo.Event) {
         subType = GROUP_MSG_SUB_TYPE.TIP
         var groupTip = msgInfo.MsgBody
         msgInfo.MsgBody = []
@@ -7144,16 +6648,10 @@ var webim = {
             msgContent = new Msg.Elem.Text(msgBody.MsgContent.Text)
             break
           case MSG_ELEMENT_TYPE.FACE:
-            msgContent = new Msg.Elem.Face(
-              msgBody.MsgContent.Index,
-              msgBody.MsgContent.Data
-            )
+            msgContent = new Msg.Elem.Face(msgBody.MsgContent.Index, msgBody.MsgContent.Data)
             break
           case MSG_ELEMENT_TYPE.IMAGE:
-            msgContent = new Msg.Elem.Images(
-              msgBody.MsgContent.UUID,
-              msgBody.MsgContent.ImageFormat || ''
-            )
+            msgContent = new Msg.Elem.Images(msgBody.MsgContent.UUID, msgBody.MsgContent.ImageFormat || '')
             for (var j in msgBody.MsgContent.ImageInfoArray) {
               msgContent.addImage(
                 new Msg.Elem.Images.Image(
@@ -7192,11 +6690,7 @@ var webim = {
           case MSG_ELEMENT_TYPE.FILE:
           case MSG_ELEMENT_TYPE.FILE + ' ':
             msgType = MSG_ELEMENT_TYPE.FILE
-            var fileUrl = getFileDownUrl(
-              msgBody.MsgContent.UUID,
-              msgInfo.From_Account,
-              msgBody.MsgContent.FileName
-            )
+            var fileUrl = getFileDownUrl(msgBody.MsgContent.UUID, msgInfo.From_Account, msgBody.MsgContent.FileName)
 
             if (msgBody.MsgContent) {
               msgContent = new Msg.Elem.File(
@@ -7223,10 +6717,7 @@ var webim = {
               msgBody.MsgContent.List_Account,
               msgBody.MsgContent.MsgMemberExtraInfo
             )
-            if (
-              GROUP_TIP_TYPE.JOIN == opType ||
-              GROUP_TIP_TYPE.QUIT == opType
-            ) {
+            if (GROUP_TIP_TYPE.JOIN == opType || GROUP_TIP_TYPE.QUIT == opType) {
               //加群或退群时，设置最新群成员数
               msgContent.setGroupMemberNum(msgBody.MsgContent.MemberNum)
             } else if (GROUP_TIP_TYPE.MODIFY_GROUP_INFO == opType) {
@@ -7275,8 +6766,7 @@ var webim = {
                 )
                 msgContent.addGroupInfo(tmpNGINotification)
                 tempIsCallbackFlag = true
-                tempNewGroupInfo.GroupNotification =
-                  msgGroupNewInfo.GroupNotification
+                tempNewGroupInfo.GroupNotification = msgGroupNewInfo.GroupNotification
               }
               if (msgGroupNewInfo.GroupIntroduction) {
                 var tmpNGIIntroduction = new Msg.Elem.GroupTip.GroupInfo(
@@ -7285,16 +6775,11 @@ var webim = {
                 )
                 msgContent.addGroupInfo(tmpNGIIntroduction)
                 tempIsCallbackFlag = true
-                tempNewGroupInfo.GroupIntroduction =
-                  msgGroupNewInfo.GroupIntroduction
+                tempNewGroupInfo.GroupIntroduction = msgGroupNewInfo.GroupIntroduction
               }
 
               //回调群资料变化通知方法
-              if (
-                isSyncGroupMsgs == false &&
-                tempIsCallbackFlag &&
-                onGroupInfoChangeCallback
-              ) {
+              if (isSyncGroupMsgs == false && tempIsCallbackFlag && onGroupInfoChangeCallback) {
                 onGroupInfoChangeCallback(tempNewGroupInfo)
               }
             } else if (GROUP_TIP_TYPE.MODIFY_MEMBER_INFO == opType) {
@@ -7303,27 +6788,18 @@ var webim = {
               for (var n in memberInfos) {
                 var memberInfo = memberInfos[n]
                 msgContent.addMemberInfo(
-                  new Msg.Elem.GroupTip.MemberInfo(
-                    memberInfo.User_Account,
-                    memberInfo.ShutupTime
-                  )
+                  new Msg.Elem.GroupTip.MemberInfo(memberInfo.User_Account, memberInfo.ShutupTime)
                 )
               }
             }
             break
           case MSG_ELEMENT_TYPE.CUSTOM:
             msgType = MSG_ELEMENT_TYPE.CUSTOM
-            msgContent = new Msg.Elem.Custom(
-              msgBody.MsgContent.Data,
-              msgBody.MsgContent.Desc,
-              msgBody.MsgContent.Ext
-            )
+            msgContent = new Msg.Elem.Custom(msgBody.MsgContent.Data, msgBody.MsgContent.Desc, msgBody.MsgContent.Ext)
             break
           default:
             msgType = MSG_ELEMENT_TYPE.TEXT
-            msgContent = new Msg.Elem.Text(
-              'web端暂不支持' + msgBody.MsgType + '消息'
-            )
+            msgContent = new Msg.Elem.Text('web端暂不支持' + msgBody.MsgType + '消息')
             break
         }
         msg.elems.push(new Msg.Elem(msgType, msgContent))
@@ -7469,10 +6945,7 @@ var webim = {
         }
       }
       //file的slice方法，注意它的兼容性，在不同浏览器的写法不同
-      var blobSlice =
-        File.prototype.mozSlice ||
-        File.prototype.webkitSlice ||
-        File.prototype.slice
+      var blobSlice = File.prototype.mozSlice || File.prototype.webkitSlice || File.prototype.slice
       if (!blobSlice) {
         if (cbErr) {
           cbErr(tool.getReturnError('当前浏览器不支持FileAPI', -19))
@@ -7540,8 +7013,7 @@ var webim = {
 
       var fileObj = document.getElementById(fileId)
       if (!fileObj) {
-        errInfo =
-          '获取文件对象为空: fileId=' + fileId + '(没有选择文件或者fileId非法)'
+        errInfo = '获取文件对象为空: fileId=' + fileId + '(没有选择文件或者fileId非法)'
         error = tool.getReturnError(errInfo, -21)
         if (cbErr) cbErr(error)
         return
@@ -7659,10 +7131,7 @@ var webim = {
           me.cbErr = cbErr //上传失败回调事件
 
           me.reader = new FileReader() //读取文件对象
-          me.blobSlice =
-            File.prototype.mozSlice ||
-            File.prototype.webkitSlice ||
-            File.prototype.slice //file的slice方法,不同浏览器不一样
+          me.blobSlice = File.prototype.mozSlice || File.prototype.webkitSlice || File.prototype.slice //file的slice方法,不同浏览器不一样
 
           me.reader.onloadstart = me.onLoadStart //开始读取回调事件
           me.reader.onprogress = me.onProgress //读取文件进度回调事件
@@ -7741,11 +7210,7 @@ var webim = {
                   }
                   if (me.fileType == UPLOAD_RES_TYPE.FILE) {
                     //如果上传的是文件，下载地址需要sdk内部拼接
-                    tempResp.URL_INFO = getFileDownUrl(
-                      resp.File_UUID,
-                      ctx.identifier,
-                      me.file.name
-                    )
+                    tempResp.URL_INFO = getFileDownUrl(resp.File_UUID, ctx.identifier, me.file.name)
                   }
                   me.cbOk(tempResp)
                 }
@@ -8145,11 +7610,7 @@ var webim = {
     return FileUploader.submitUploadFileForm(options, cbOk, cbErr)
   }
   //上传图片或文件(Base64)接口
-  webim.uploadFileByBase64 = webim.uploadPicByBase64 = function(
-    options,
-    cbOk,
-    cbErr
-  ) {
+  webim.uploadFileByBase64 = webim.uploadPicByBase64 = function(options, cbOk, cbErr) {
     //请求参数
     var opt = {
       To_Account: options.toAccount,
@@ -8170,8 +7631,7 @@ var webim = {
 
   //设置jsonp返回的值
   webim.setJsonpLastRspData = function(rspData) {
-    jsonpLastRspData =
-      typeof rspData == 'string' ? JSON.parse(rspData) : rspData
+    jsonpLastRspData = typeof rspData == 'string' ? JSON.parse(rspData) : rspData
   }
 
   //获取长轮询ID

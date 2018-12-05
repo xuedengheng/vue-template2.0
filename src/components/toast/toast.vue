@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div v-if="showToast" class="toast">
-      <div class="content">{{ content }}</div>
+      <div class="content">{{content}}</div>
     </div>
   </transition>
 </template>

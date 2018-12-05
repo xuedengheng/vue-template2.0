@@ -66,10 +66,7 @@ export function formatNumber(n) {
 export function objDeepCopy(source) {
   let sourceCopy = source instanceof Array ? [] : {}
   for (let item in source) {
-    sourceCopy[item] =
-      typeof source[item] === 'object'
-        ? objDeepCopy(source[item])
-        : source[item]
+    sourceCopy[item] = typeof source[item] === 'object' ? objDeepCopy(source[item]) : source[item]
   }
   return sourceCopy
 }

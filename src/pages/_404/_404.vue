@@ -3,7 +3,7 @@
     <h1 :class="$style.title">
       404
       <template v-if="resource">
-        {{ resource }}
+        {{resource}}
       </template>
       Not Found
     </h1>

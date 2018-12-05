@@ -15,9 +15,7 @@ console.log(requireApiModules.keys())
 
 requireApiModules.keys().forEach((fileName) => {
   const moduleConfig = requireApiModules(fileName)
-  const moduleName = upperFirst(
-    camelCase(fileName.replace(/^\.\//, '').replace(/\.js/, ''))
-  )
+  const moduleName = upperFirst(camelCase(fileName.replace(/^\.\//, '').replace(/\.js/, '')))
   API[moduleName] = moduleConfig.default || moduleConfig
 })
 

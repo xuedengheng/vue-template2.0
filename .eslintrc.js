@@ -17,32 +17,34 @@ module.exports = {
     // Only allow debugger in development
     'no-debugger': process.env.PRE_COMMIT ? 'error' : 'off',
     // Only allow `console.log` in development
-    'no-console': process.env.PRE_COMMIT
-      ? ['error', {allow: ['warn', 'error']}]
-      : 'off',
-    'vue/component-name-in-template-casing': [
-      'error',
-      'kebab-case',
-      {
-        ignores: [
-          'component',
-          'template',
-          'transition',
-          'transition-group',
-          'keep-alive',
-          'slot',
-          'router-view',
-          'router-link'
-        ]
-      }
-    ],
-    'vue/multiline-html-element-content-newline': 2,
-    'vue/html-closing-bracket-spacing': 0,
-    'vue/singleline-html-element-content-newline': 0,
+    'no-console': process.env.PRE_COMMIT ? ['error', {allow: ['warn', 'error']}] : 'off',
+    'vue/component-name-in-template-casing': ['error', 'kebab-case'],
+    'vue/multiline-html-element-content-newline': 'off',
+    'vue/mustache-interpolation-spacing': ['error', 'never'],
+    'vue/singleline-html-element-content-newline': 'off',
     'vue/no-spaces-around-equal-signs-in-attribute': 0,
-    'vue/html-self-closing': 0,
     'vue/script-indent': ['error', 2, {baseIndent: 1}],
     'vue/attribute-hyphenation': ['error', 'never'],
+    'vue/html-closing-bracket-spacing': [
+      'error',
+      {
+        startTag: 'never',
+        endTag: 'never',
+        selfClosingTag: 'always'
+      }
+    ],
+    'vue/html-self-closing': [
+      'error',
+      {
+        html: {
+          void: 'never',
+          normal: 'never',
+          component: 'never'
+        },
+        svg: 'always',
+        math: 'always'
+      }
+    ],
     'vue/max-attributes-per-line': [
       'error',
       {
@@ -51,6 +53,31 @@ module.exports = {
           max: 5,
           allowFirstLine: true
         }
+      }
+    ],
+    'vue/order-in-components': [
+      'error',
+      {
+        order: [
+          'el',
+          'name',
+          'parent',
+          'functional',
+          ['delimiters', 'comments'],
+          ['components', 'directives', 'filters'],
+          'extends',
+          'mixins',
+          'inheritAttrs',
+          'model',
+          ['props', 'propsData'],
+          'data',
+          'computed',
+          'watch',
+          'LIFECYCLE_HOOKS',
+          'methods',
+          ['template', 'render'],
+          'renderError'
+        ]
       }
     ]
   },

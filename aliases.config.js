@@ -26,9 +26,7 @@ for (const alias in aliases) {
   const aliasTo = aliases[alias]
   module.exports.webpack[alias] = resolveSrc(aliasTo)
   const aliasHasExtension = /\.\w+$/.test(aliasTo)
-  module.exports.jest[`^${alias}$`] = aliasHasExtension
-    ? `<rootDir>/${aliasTo}`
-    : `<rootDir>/${aliasTo}/index.js`
+  module.exports.jest[`^${alias}$`] = aliasHasExtension ? `<rootDir>/${aliasTo}` : `<rootDir>/${aliasTo}/index.js`
   module.exports.jest[`^${alias}/(.*)$`] = `<rootDir>/${aliasTo}/$1`
   module.exports.jsconfig[alias + '/*'] = [aliasTo + '/*']
   module.exports.jsconfig[alias] = aliasTo.includes('/index.')
@@ -62,9 +60,7 @@ fs.writeFile(
   ),
   (error) => {
     if (error) {
-      console.error(
-        'Error while creating jsconfig.json from aliases.config.js.'
-      )
+      console.error('Error while creating jsconfig.json from aliases.config.js.')
       throw error
     }
   }

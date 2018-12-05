@@ -3,11 +3,7 @@ import camelCase from 'lodash/camelCase'
 const moduleCache = {}
 const root = {modules: {}}
 ;(function updateModules() {
-  const requireModule = require.context(
-    '.',
-    true,
-    /^((?!index|\.unit\.).)*\.js$/
-  )
+  const requireModule = require.context('.', true, /^((?!index|\.unit\.).)*\.js$/)
 
   requireModule.keys().forEach((fileName) => {
     const moduleDefinition = requireModule(fileName)

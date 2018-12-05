@@ -64,9 +64,7 @@ function utf8to16(str) {
         // 1110 xxxx 10xx xxxx 10xx xxxx
         char2 = str.charCodeAt(i++)
         char3 = str.charCodeAt(i++)
-        out += String.fromCharCode(
-          ((c & 0x0f) << 12) | ((char2 & 0x3f) << 6) | ((char3 & 0x3f) << 0)
-        )
+        out += String.fromCharCode(((c & 0x0f) << 12) | ((char2 & 0x3f) << 6) | ((char3 & 0x3f) << 0))
         break
     }
   }
@@ -84,8 +82,7 @@ function utf8to16(str) {
 * data = base64decode(b64);
 */
 
-var base64EncodeChars =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+var base64EncodeChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 var base64DecodeChars = new Array(
   -1,
   -1,
@@ -300,8 +297,7 @@ function base64decode(str) {
 
 function arrayBufferToBase64(raw) {
   let base64 = ''
-  let encodings =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+  let encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
   let bytes = new Uint8Array(raw)
   let byteLength = bytes.byteLength
   let byteRemainder = byteLength % 3

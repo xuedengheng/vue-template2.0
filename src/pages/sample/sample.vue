@@ -1,16 +1,16 @@
 <template>
   <div class="sample">
     <h1>截图上传</h1>
-    <cropper ref="cropper" @confirm="cropperConfirm($event)"/>
-    <input type="file" accept="image/*" @change="_fileChange($event, 'images')"/>
+    <cropper ref="cropper" @confirm="cropperConfirm($event)"></cropper>
+    <input type="file" accept="image/*" @change="_fileChange($event, 'images')">
     <hr>
     <h1>直接上传</h1>
-    <input type="file" accept="image/*" @change="_fileChange($event, 'images-only')"/>
+    <input type="file" accept="image/*" @change="_fileChange($event, 'images-only')">
     <img v-if="testSrc" style="width: 100%" :src="testSrc" alt="">
     <hr>
     <h1>点播上传</h1>
-    <input type="file" accept="video/*" @change="_fileChange($event, 'video')"/>
-    <video v-if="testVideo" :src="testVideo" style="width: 100vw"/>
+    <input type="file" accept="video/*" @change="_fileChange($event, 'video')">
+    <video v-if="testVideo" :src="testVideo" style="width: 100vw"></video>
     <hr>
     <h1>二维码</h1>
     <button @click="createQrCode">
@@ -42,6 +42,7 @@
       }
     },
     created() {
+      console.log(process.env)
       this.$loading.show()
       setTimeout(() => {
         this.$loading.hide()
@@ -84,24 +85,22 @@
           this.$refs.cropper.show(arr[0])
           break
         case 'images-only':
-          this.$cos
-            .uploadFiles(this.$cosFileType.IMAGE_TYPE, arr)
-            .then((resArr) => {
-              this.$loading.hide()
-              let arr = []
-              resArr.map((item) => {
-                if (item.error !== this.$ERR_OK) {
-                  return this.$toast.show(item.message)
-                }
-                let obj = {
-                  image_id: item.data.id,
-                  image_url: item.data.url,
-                  id: 0
-                }
-                arr.push(obj)
-              })
-              this.testSrc = arr[0].image_url
+          this.$cos.uploadFiles(this.$cosFileType.IMAGE_TYPE, arr).then((resArr) => {
+            this.$loading.hide()
+            let arr = []
+            resArr.map((item) => {
+              if (item.error !== this.$ERR_OK) {
+                return this.$toast.show(item.message)
+              }
+              let obj = {
+                image_id: item.data.id,
+                image_url: item.data.url,
+                id: 0
+              }
+              arr.push(obj)
             })
+            this.testSrc = arr[0].image_url
+          })
           break
         case 'video':
           this.$loading.show('视频上传中...')
@@ -124,9 +123,7 @@
       },
       async cropperConfirm(e) {
         this.$loading.show()
-        let resArr = await this.$cos.uploadFiles(this.$cosFileType.IMAGE_TYPE, [
-          e.file
-        ])
+        let resArr = await this.$cos.uploadFiles(this.$cosFileType.IMAGE_TYPE, [e.file])
         let res = resArr[0]
         if (res.error !== this.$ERR_OK) {
           return this.$toast.show(res.message)

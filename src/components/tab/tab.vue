@@ -2,9 +2,9 @@
   <div class="tab border-top-1px">
     <router-link v-for="(item, index) in tabList" :key="index" tag="div" :to="item.path" class="tab-item">
       <div class="item-container">
-        <div class="icon" :class="item.iconClass" />
+        <div class="icon" :class="item.iconClass"></div>
         <p class="icon-text">
-          {{ item.text }}
+          {{item.text}}
         </p>
       </div>
     </router-link>

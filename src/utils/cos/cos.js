@@ -25,12 +25,7 @@ function _getAuthorization(options, callback) {
   // const pathname = key.indexOf('/') === 0 ? key : '/' + key
   const pathname = key
   const Authorization = storage.get('token')
-  const url =
-    baseUrl +
-    '/api/cos/temp/signature?method=' +
-    method +
-    '&image=' +
-    encodeURIComponent(pathname)
+  const url = baseUrl + '/api/cos/temp/signature?method=' + method + '&image=' + encodeURIComponent(pathname)
   const xhr = new XMLHttpRequest()
   xhr.open('GET', url, true)
   xhr.setRequestHeader('Authorization', Authorization)
@@ -80,14 +75,12 @@ export function uploadFiles(fileType, files, showProcess, processCallBack) {
           const Bucket = info['bucket']
           const Region = info['region']
           const protocol = location.protocol === 'https:' ? 'https:' : 'http:'
-          const prefix =
-            protocol + '//' + Bucket + '.cos.' + Region + '.myqcloud.com/'
+          const prefix = protocol + '//' + Bucket + '.cos.' + Region + '.myqcloud.com/'
           const url = prefix + info.pathname
           const xhr = new XMLHttpRequest()
           xhr.open('PUT', url, true)
           xhr.setRequestHeader('Authorization', auth)
-          XCosSecurityToken &&
-            xhr.setRequestHeader('x-cos-security-token', XCosSecurityToken)
+          XCosSecurityToken && xhr.setRequestHeader('x-cos-security-token', XCosSecurityToken)
           xhr.upload.onprogress = function(e) {
             let progress = Math.floor((e.loaded / e.total) * 10000) / 100
             processCallBack && processCallBack(progress)
@@ -98,17 +91,11 @@ export function uploadFiles(fileType, files, showProcess, processCallBack) {
                 resolve(resp)
               })
             } else {
-              reject(
-                new Error('文件 ' + Key + ' 上传失败，状态码：' + xhr.status)
-              )
+              reject(new Error('文件 ' + Key + ' 上传失败，状态码：' + xhr.status))
             }
           }
           xhr.onerror = function() {
-            reject(
-              new Error(
-                '文件 ' + Key + ' 上传失败，请检查是否没配置 CORS 跨域规则'
-              )
-            )
+            reject(new Error('文件 ' + Key + ' 上传失败，请检查是否没配置 CORS 跨域规则'))
           }
           xhr.send(file)
         })

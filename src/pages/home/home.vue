@@ -1,6 +1,6 @@
 <template>
   <div class="home" @touchmove.prevent>
-    <router-view style="z-index: 10"/>
+    <router-view style="z-index: 10"></router-view>
     <tab></tab>
   </div>
 </template>

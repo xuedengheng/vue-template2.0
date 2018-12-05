@@ -1,9 +1,9 @@
 <template>
   <transition :name="transitionType">
     <keep-alive v-if="keepAlive">
-      <router-view @refresh="refresh" />
+      <router-view @refresh="refresh"></router-view>
     </keep-alive>
-    <router-view v-else @refresh="refresh" />
+    <router-view v-else @refresh="refresh"></router-view>
   </transition>
 </template>
 

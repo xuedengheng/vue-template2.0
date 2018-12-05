@@ -6,23 +6,15 @@ const requireBaseComponent = require.context('.', true, /_base-[\w-]+\.vue$/)
 
 requireBaseComponent.keys().forEach((fileName) => {
   const componentConfig = requireBaseComponent(fileName)
-  const componentName = upperFirst(
-    camelCase(fileName.replace(/^\.\/_/, '').replace(/[\w-]+\.vue$/, ''))
-  )
+  const componentName = upperFirst(camelCase(fileName.replace(/^\.\/_/, '').replace(/[\w-]+\.vue$/, '')))
   Vue.component(componentName, componentConfig.default || componentConfig)
 })
 
-const requireGlobalComponent = require.context(
-  '.',
-  true,
-  /_global-[\w-]+\.vue$/
-)
+const requireGlobalComponent = require.context('.', true, /_global-[\w-]+\.vue$/)
 
 requireGlobalComponent.keys().forEach((fileName) => {
   const componentConfig = requireGlobalComponent(fileName)
-  const componentName = camelCase(
-    fileName.replace(/^\.\/_global-/, '').replace(/[\w-]+\.vue$/, '')
-  )
+  const componentName = camelCase(fileName.replace(/^\.\/_global-/, '').replace(/[\w-]+\.vue$/, ''))
 
   let plugins = {}
   plugins[componentName] = {}

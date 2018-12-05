@@ -12,7 +12,7 @@
         <div v-if="pullUpLoad" class="pullup-wrapper" :class="showNoMore ? '' : 'nopullup-wrapper'">
           <div v-if="!isPullUpLoad" class="before-trigger">
             <no-more v-if="showNoMore">
-              <span>{{ pullUpTxt }}</span>
+              <span>{{pullUpTxt}}</span>
             </no-more>
           </div>
           <div v-else class="after-trigger">
@@ -38,7 +38,7 @@
           </div>
           <div v-else>
             <no-more v-if="showNoMore">
-              <span>{{ refreshTxt }}</span>
+              <span>{{refreshTxt}}</span>
             </no-more>
           </div>
         </div>
@@ -154,14 +154,8 @@
     },
     computed: {
       pullUpTxt() {
-        const moreTxt =
-          (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more) ||
-          '加载更多'
-        const noMoreTxt =
-          (this.pullUpLoad &&
-          this.pullUpLoad.txt &&
-          this.pullUpLoad.txt.noMore) ||
-          '没有更多了'
+        const moreTxt = (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more) || '加载更多'
+        const noMoreTxt = (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.noMore) || '没有更多了'
         return this.pullUpDirty ? moreTxt : noMoreTxt
       },
       refreshTxt() {
@@ -192,8 +186,7 @@
           return
         }
         if (this.$refs.listWrapper && (this.pullDownRefresh || this.pullUpLoad)) {
-          this.$refs.listWrapper.style.minHeight = `${getRect(this.$refs.wrapper)
-            .height + 1}px`
+          this.$refs.listWrapper.style.minHeight = `${getRect(this.$refs.wrapper).height + 1}px`
         }
         let options = {
           probeType: this.probeType,
@@ -280,16 +273,12 @@
           }
           if (this.beforePullDown) {
             this.bubbleY = Math.max(0, pos.y + this.pullDownInitTop)
-            this.pullDownStyle = `top:${Math.min(
-              pos.y + this.pullDownInitTop,
-              10
-            )}px`
+            this.pullDownStyle = `top:${Math.min(pos.y + this.pullDownInitTop, 10)}px`
           } else {
             this.bubbleY = 0
           }
           if (this.isRebounding) {
-            this.pullDownStyle = `top:${10 -
-              (this.pullDownRefresh.stop - pos.y)}px`
+            this.pullDownStyle = `top:${10 - (this.pullDownRefresh.stop - pos.y)}px`
           }
         })
       },

@@ -109,10 +109,7 @@ export default class webimHandler {
             let content = elem.getContent() // 获取元素对象
             ext = content.getExt()
           }
-          return (
-            type === webim.MSG_ELEMENT_TYPE.TEXT ||
-            (type === webim.MSG_ELEMENT_TYPE.CUSTOM && ext * 1 === 20005)
-          )
+          return type === webim.MSG_ELEMENT_TYPE.TEXT || (type === webim.MSG_ELEMENT_TYPE.CUSTOM && ext * 1 === 20005)
         })
         let customArr = arr.filter((item) => {
           let elems = item.getElems() // 获取消息包含的元素数组
@@ -170,15 +167,7 @@ export default class webimHandler {
 
   // 处理消息（私聊(包括普通消息和全员推送消息)，普通群(非直播聊天室)消息）
   static handlderMsg(msg) {
-    let fromAccount,
-      fromAccountNick,
-      sessType,
-      subType,
-      content,
-      isSelfSend,
-      seq,
-      random,
-      nameObj
+    let fromAccount, fromAccountNick, sessType, subType, content, isSelfSend, seq, random, nameObj
     return new Promise(async (resolve, reject) => {
       fromAccount = msg.getFromAccount()
       if (!fromAccount) {
@@ -231,10 +220,7 @@ export default class webimHandler {
               )
               resolve(data)
               console.error(
-                '收到一条c2c消息(好友消息或者全员推送消息): 发送人=' +
-                  fromAccountNick +
-                  ', 内容=' +
-                  content
+                '收到一条c2c消息(好友消息或者全员推送消息): 发送人=' + fromAccountNick + ', 内容=' + content
               )
               break
           }
@@ -582,9 +568,7 @@ export default class webimHandler {
           } else {
             productName = data.title
           }
-          resTxt = `${nickName}提交了拼团活动${productName}的订单,金额为${
-            data.total
-          }元`
+          resTxt = `${nickName}提交了拼团活动${productName}的订单,金额为${data.total}元`
           break
         case 30010:
           data = JSON.parse(msg.data)
@@ -593,9 +577,7 @@ export default class webimHandler {
           } else {
             productName = data.title
           }
-          resTxt = `${nickName}提交了拼团活动${productName}的订单,金额为${
-            data.total
-          }元,并完成支付`
+          resTxt = `${nickName}提交了拼团活动${productName}的订单,金额为${data.total}元,并完成支付`
           break
         case 30011:
           data = JSON.parse(msg.data)
@@ -676,9 +658,7 @@ export default class webimHandler {
           } else {
             productName = data.title
           }
-          resTxt = `${nickName}正在参加砍价活动${productName}，成功砍掉${
-            data.total
-          }元`
+          resTxt = `${nickName}正在参加砍价活动${productName}，成功砍掉${data.total}元`
           break
         case 30020:
           data = JSON.parse(msg.data)
@@ -705,9 +685,7 @@ export default class webimHandler {
           } else {
             productName = data.title
           }
-          resTxt = `${nickName}提交了砍价活动${productName}的订单,金额为${
-            data.total
-          }元`
+          resTxt = `${nickName}提交了砍价活动${productName}的订单,金额为${data.total}元`
           break
         case 30023:
           data = JSON.parse(msg.data)
@@ -716,9 +694,7 @@ export default class webimHandler {
           } else {
             productName = data.title
           }
-          resTxt = `${nickName}提交了砍价活动${productName}的订单,金额为${
-            data.total
-          }元，并支付成功`
+          resTxt = `${nickName}提交了砍价活动${productName}的订单,金额为${data.total}元，并支付成功`
           break
         case 40001:
           resTxt = `${nickName}通过扫描他人分享的服务海报查看了你的服务`
@@ -754,9 +730,7 @@ export default class webimHandler {
           } else {
             productName = data.title
           }
-          resTxt = `${nickName}提交了服务${productName}的订单,金额为${
-            data.total
-          }元，并完成支付`
+          resTxt = `${nickName}提交了服务${productName}的订单,金额为${data.total}元，并完成支付`
           break
         case 40007:
           resTxt = `${nickName}查看了你的品牌故事，请把握商机`
