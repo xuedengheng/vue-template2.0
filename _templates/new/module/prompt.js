@@ -2,10 +2,10 @@ module.exports = [
   {
     type: 'input',
     name: 'name',
-    message: 'Name:',
+    message: '名称:',
     validate(value) {
       if (!value.length) {
-        return '状态管理模块名字不能为空！'
+        return '状态管理模块名称不能为空！'
       }
       return true
     }

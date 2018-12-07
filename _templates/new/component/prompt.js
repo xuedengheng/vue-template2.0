@@ -4,10 +4,10 @@ module.exports = [
   {
     type: 'input',
     name: 'name',
-    message: 'Name:',
+    message: '名称:',
     validate(value) {
       if (!value.length) {
-        return '组件名字不能为空！'
+        return '组件名称不能为空！'
       }
       const fileName = _.kebabCase(value)
       if (fileName.indexOf('-') === -1) {

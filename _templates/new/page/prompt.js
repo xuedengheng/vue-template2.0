@@ -5,7 +5,7 @@ module.exports = [
     message: '名称:',
     validate(value) {
       if (!value.length) {
-        return '页面组件名字不能为空！'
+        return '页面组件名称不能为空！'
       }
       return true
     }
@@ -13,7 +13,7 @@ module.exports = [
   {
     type: 'input',
     name: 'note',
-    message: '注释',
+    message: '注释：',
     validate(value) {
       if (!value.length) {
         return '路由注释不能为空！'

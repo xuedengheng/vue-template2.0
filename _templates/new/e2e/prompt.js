@@ -2,10 +2,10 @@ module.exports = [
   {
     type: 'input',
     name: 'name',
-    message: 'Name:',
+    message: '名称:',
     validate(value) {
       if (!value.length) {
-        return '自动化测试名字不能为空'
+        return '自动化测试名称不能为空'
       }
       return true
     }
