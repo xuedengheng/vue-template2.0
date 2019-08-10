@@ -67,8 +67,8 @@ module.exports = {
   },
   productionSourceMap: !builded,
   devServer: {
-    // port: {{ port }},
-    port: 8888,
+    port: {{ port }},
+    // port: 8888,
     ...(process.env.VUE_APP_API
       ? // 代理生产地址.
         {
