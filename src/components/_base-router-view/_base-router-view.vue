@@ -15,7 +15,7 @@
     data() {
       return {
         keepAlive: false,
-        transitionType: 'slide'
+        transitionType: ''
       }
     },
     watch: {

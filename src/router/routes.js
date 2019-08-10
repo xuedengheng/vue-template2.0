@@ -1,30 +1,56 @@
 export default [
-  // 测试页面配置
-  {
-    path: '/test-page1',
-    name: 'test-page1',
-    component: () => lazyLoadView(import('@pages/test-page1/test-page1'))
-  },
-  // 测试页面注释
-  {
-    path: '/test-page',
-    name: 'test-page',
-    component: () => lazyLoadView(import('@pages/test-page/test-page'))
-  },
   {
     path: '/',
-    name: 'home',
-    component: () => lazyLoadView(import('@pages/home/home'))
-  },
-  {
-    path: '/sample',
-    name: 'sample',
-    component: () => lazyLoadView(import('@pages/sample/sample'))
-  },
-  {
-    path: '/other-pages',
-    name: 'other-pages',
-    component: () => lazyLoadView(import('@pages/other-pages/other-pages'))
+    name: 'index',
+    redirect: '/mall/goods/product-list',
+    component: () => import('@pages/index/index'),
+    children: [
+      // 商品列表
+      {
+        path: '/mall',
+        name: 'mall',
+        meta: {
+          type: 'first_menu', // 一级标示
+          title: '商品管理',
+          icon: require('./icon-goods_pressed@2x.png'),
+          iconSelected: '',
+        },
+        component: {render: h => h('router-view')},
+        children: [
+          {
+            path: 'goods',
+            name: 'goods',
+            text: '商品',
+            component: {render: h => h('router-view')},
+            children: [
+              {
+                path: '/mall/goods/product-list',
+                name: 'product-list',
+                component: () => import('@pages/product-list/product-list'),
+                meta: {
+                  title: '商品列表',
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['商品列表']
+                },
+              },
+              // 新建商品
+              {
+                path: '/mall/goods/product-list/edit-product',
+                name: 'edit-product',
+                component: () => import('@pages/edit-product/edit-product'),
+                meta: {
+                  type: '',
+                  title: '编辑商品',
+                  variableIndex: 1,
+                  crumbs: ['商品列表', '商品']
+                }
+              }
+            ]
+
+          }
+        ],
+      }
+    ]
   },
   {
     path: '/404',
@@ -37,21 +63,3 @@ export default [
     redirect: '404'
   }
 ]
-
-function lazyLoadView(AsyncView) {
-  const AsyncHandler = () => ({
-    component: AsyncView,
-    loading: require('@pages/_loading/_loading').default,
-    delay: 400,
-    error: require('@pages/_timeout/_timeout').default,
-    timeout: 10000
-  })
-
-  return Promise.resolve({
-    functional: true,
-    render(h, {data, children}) {
-      // 将属性和方法传递给所有展示组件
-      return h(AsyncHandler, data, children)
-    }
-  })
-}

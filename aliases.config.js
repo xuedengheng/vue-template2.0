@@ -13,7 +13,8 @@ const aliases = {
   '@mixins': 'src/mixins',
   '@router': 'src/router',
   '@utils': 'src/utils',
-  '@state': 'src/state'
+  '@state': 'src/state',
+  '@flyio': path.join(__dirname, './node_modules/flyio/dist/npm/fly')
 }
 
 module.exports = {

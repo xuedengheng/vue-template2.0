@@ -1,10 +1,13 @@
 <template>
-  <div id="app">
-    <router-view :key="$route.fullPath"></router-view>
-  </div>
+  <transition name="fade">
+    <div id="app">
+      <router-view></router-view>
+    </div>
+  </transition>
 </template>
 
 <script>
+  /** eslint-disable **/
   import appConfig from '@src/app.config'
 
   export default {
@@ -22,8 +25,8 @@
   @import "~nprogress/nprogress.css"
 
   #nprogress .bar
-    background: red !important
+    background: $color-main !important
 
   #nprogress .peg
-    box-shadow: 0 0 10px red, 0 0 5px red !important
+    box-shadow: 0 0 10px $color-main, 0 0 5px $color-main !important
 </style>

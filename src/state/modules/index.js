@@ -3,23 +3,19 @@ import camelCase from 'lodash/camelCase'
 const moduleCache = {}
 const root = {modules: {}}
 ;(function updateModules() {
-  const requireModule = require.context('.', true, /^((?!index|\.unit\.).)*\.js$/)
-
+  const requireModule = require.context('@src', true, /.modules\/((?!index|\.unit\.|helpers).)*\.js$/)
   requireModule.keys().forEach((fileName) => {
     const moduleDefinition = requireModule(fileName)
-
-    if (moduleCache[fileName] === moduleDefinition) return
-
+    if (moduleCache[fileName] === moduleDefinition || moduleDefinition.state.todo) return
     moduleCache[fileName] = moduleDefinition
-
     const modulePath = fileName
-      .replace(/^\.\//, '')
-      .replace(/\.\w+$/, '')
-      .split(/\//)
-      .map(camelCase)
+    .replace(/^\.\//, '')
+    .replace(/\.\w+$/, '')
+    .split(/\//)
+    .map(camelCase)
 
     // 获取当前路径的模块对象
-    const {modules} = getNamespace(root, modulePath)
+    const {modules} = getNamespace(root, modulePath.slice(-1))
 
     // 将模块添加到模块对象
     modules[modulePath.pop()] = {
@@ -28,7 +24,6 @@ const root = {modules: {}}
       ...moduleDefinition
     }
   })
-
   if (module.hot) {
     module.hot.accept(requireModule.id, () => {
       updateModules()

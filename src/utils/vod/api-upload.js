@@ -1,4 +1,4 @@
-import request from '@utils/request'
+import request from '@utils/http'
 
 export default {
   /**
@@ -7,7 +7,8 @@ export default {
    */
   getUploadSign() {
     const url = `/post_vod_sign`
-    return request.post(url, {}, false)
+    const doctor = () => {}
+    return request.post({url, doctor})
   },
   /**
    * 数据入库
@@ -16,6 +17,7 @@ export default {
    */
   saveFile(data) {
     const url = `/api/merchant/check_default_image`
-    return request.post(url, data)
+    const doctor = () => {}
+    return request.post({url, data, doctor})
   }
 }

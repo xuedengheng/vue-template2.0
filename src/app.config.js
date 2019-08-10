@@ -1,4 +1,5 @@
+/* eslint-disable */
 module.exports = {
-  title: '{{ project }}',
-  description: '{{ description }}'
+  title: 'exchange-manager',
+  description: 'exchange-manager pc'
 }

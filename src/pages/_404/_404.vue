@@ -1,17 +1,11 @@
 <template>
-  <div class="404">
-    <h1 :class="$style.title">
-      404
-      <template v-if="resource">
-        {{resource}}
-      </template>
-      Not Found
-    </h1>
+  <div>
+    404
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  const PAGE_NAME = '404'
+  const PAGE_NAME = 'NOT_FOUND'
 
   export default {
     name: PAGE_NAME,
@@ -30,7 +24,4 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
-
-  .title
-    text-align: center
 </style>
