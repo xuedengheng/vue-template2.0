@@ -1,12 +1,9 @@
-import request from '@utils/request'
+import request from '@utils/http'
 
 export default {
-  /**
-   * 获取微信JSSDK配置
-   * @returns {*}
-   */
-  jssdkConfig(data, loading = false) {
-    let url = '/api/wechat/jssdk'
-    return request.get(url, data, loading)
+  // 授权
+  getToken(args) {
+    const url = `/api/jwt/customer/login`
+    return request.get({url, ...args})
   }
 }

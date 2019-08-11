@@ -1,6 +1,6 @@
 import Upload from './api-upload'
 
-const time = 1 * 1000
+const time = 1000
 
 /*eslint-disable*/
 

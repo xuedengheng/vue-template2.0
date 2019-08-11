@@ -7,5 +7,5 @@ after: "export default"
   {
     path: '/<%= name %>',
     name: '<%= name %>',
-    component: () => lazyLoadView(import('@pages/<%= name %>/<%= name %>'))
+    component: () => import('@pages/<%= name %>/<%= name %>')
   },

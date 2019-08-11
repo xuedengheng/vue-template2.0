@@ -27,3 +27,5 @@ export const BASE_URL =
         : LOCAL_URL
 
 export const ERR_OK = 0
+export const TIME_OUT = 10000
+export const ERR_NO = -404

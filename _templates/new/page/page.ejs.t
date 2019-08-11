@@ -2,13 +2,15 @@
 to: "src/pages/<%= h.inflection.dasherize(name) %>/<%= h.inflection.dasherize(name) %>.vue"
 ---
 <template>
-  <div class="<%= h.inflection.dasherize(name) %>">
-    <%= h.inflection.dasherize(name) %>
+  <div class="<%= h.inflection.dasherize(name.replace('_', '')) %>">
+    <%= h.inflection.dasherize(name.replace('_', '')) %>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  const PAGE_NAME = '<%=  h.inflection.dasherize(name).toUpperCase().replace(/-/g, '_')%>'
+  // import * as Helpers from './helpers'
+  // import API from '@api'
+  const PAGE_NAME = '<%=  h.inflection.dasherize(name.replace('_', '')).toUpperCase().replace(/-/g, '_')%>'
   const TITLE = '<%= title %>'
 
   export default {
@@ -27,6 +29,6 @@ to: "src/pages/<%= h.inflection.dasherize(name) %>/<%= h.inflection.dasherize(na
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
 
-  .<%= h.inflection.dasherize(name) %>
+  .<%= h.inflection.dasherize(name.replace('_', '')) %>
     width: 100%
 </style>

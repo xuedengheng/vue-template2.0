@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import VueMeta from 'vue-meta'
 import NProgress from 'nprogress/nprogress'
 import routes from './routes'
+import store from '@state/store'
 
 NProgress.configure({showSpinner: false})
 
@@ -13,7 +14,7 @@ Vue.use(VueMeta, {
 
 const router = new VueRouter({
   routes,
-  mode: 'history',
+  mode: process.env.NODE_ENV === 'production' ? 'history' : '',
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
@@ -57,7 +58,25 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
   next()
 })
 
+const ADD_TEXT = '新建'
+const EDIT_TEXT = '编辑'
+const SUCCESS_TEXT = '完善资料'
 router.afterEach((routeTo, routeFrom) => {
+  const name = routeTo.params.name
+  const variableIndex = routeTo.meta.variableIndex
+  let titles = routeTo.meta.crumbs ? [...routeTo.meta.crumbs] : []
+  // 判断该页面是否是变动的标题
+  if (variableIndex || variableIndex === 0) {
+    if (routeTo.query.complete || routeTo.params.complete) {
+      titles[variableIndex] = SUCCESS_TEXT
+    } else {
+      titles[variableIndex] = (routeTo.query.id || routeTo.params.id ? EDIT_TEXT : ADD_TEXT) + titles[variableIndex]
+    }
+  }
+  titles[titles.length - 1] = name || titles[titles.length - 1]
+  if (titles) {
+    store.commit('global/SET_CURRENT_TITLES', titles)
+  }
   NProgress.done()
 })
 
