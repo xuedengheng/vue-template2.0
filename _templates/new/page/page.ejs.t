@@ -8,7 +8,7 @@ to: "src/pages/<%= h.inflection.dasherize(name) %>/<%= h.inflection.dasherize(na
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './helpers'
+  // import * as Helpers from './modules/helpers'
   // import API from '@api'
   const PAGE_NAME = '<%=  h.inflection.dasherize(name.replace('_', '')).toUpperCase().replace(/-/g, '_')%>'
   const TITLE = '<%= title %>'
@@ -22,6 +22,12 @@ to: "src/pages/<%= h.inflection.dasherize(name) %>/<%= h.inflection.dasherize(na
       return {
 
       }
+    },
+    computed: {
+      // ...Helpers.computed,
+    },
+    methods: {
+      // ...Helpers.methods,
     }
   }
 </script>

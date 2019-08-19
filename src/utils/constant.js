@@ -1,5 +1,2 @@
-export const USER_TYPE = {
-  GOODS: 'goods',
-  ORDER: 'order',
-  CLIENT: 'client'
-}
+// 常量池
+export const API_PUB = ''
