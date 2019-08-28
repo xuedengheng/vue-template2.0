@@ -21,7 +21,6 @@
     watch: {
       $route(to, from) {
         this.keepAlive = to.meta.keepAlive
-      // this.transitionType = 'out'
       }
     },
     methods: {
